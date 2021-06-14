@@ -1,0 +1,5 @@
+Q - Is C the fastest programming language?
+A - So the higher level programming language whose compiler can compile high level source code 
+    closest to assembly code would be C and hence it would be considered as the fastest programming 
+    language. 
+    C++ is also compiled but then the Run Time Type Identification features result in slower execution times compared to C.

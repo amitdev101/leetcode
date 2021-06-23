@@ -14,3 +14,8 @@ class Solution:
                     res.add((nums[i], nums[j], target))
             st.add(nums[i]) ### adding every element in set
         return list(res)
+
+if __name__=='__main__':
+    sol = Solution()
+    input = [1,1,-1,0,0,0]
+    print(sol.threeSum(input))

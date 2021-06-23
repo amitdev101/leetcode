@@ -1,2 +1,2 @@
 # leetcode
-leetcode solutions in C and Python
+leetcode solutions in C, C++ and Python

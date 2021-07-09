@@ -1,0 +1,1 @@
+https://leetcode.com/problems/next-permutation/discuss/13867/C%2B%2B-from-Wikipedia

@@ -1,16 +1,17 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define watch(x) cout<<(#x)<<" = "<<x<<endl;
+int dp[2001][2001];
 class Solution {
 private:
-    int dp[2001][20001];
+    
 public:
     // Solution(int a){
     //     cout<<"calling constructor\n";
     // }
     bool isMatch(string s, string p) {
         int sn = 2000;
-        int pn = 20000;
+        int pn = 2000;
         for(int i=0;i<=sn;i++){
             for(int j=0;j<=pn;j++){
                 dp[i][j]=-1;
@@ -61,10 +62,11 @@ public:
 };
 
 int main(){
-    cout<<"in main";
+    cout<<"in main\n";
     Solution mysol;
-    string s = "Hello";
-    string p = "Hello";
+    // string s = "Hello";
+    string s = "fg";
+    string p = "???";
     int ans = mysol.isMatch(s,p);
     watch(ans);
     return 0;

@@ -1,0 +1,55 @@
+//parking lot
+https://drive.google.com/file/d/1cDLJQA4_RiqE5d2cCekhpTuVfLDnT_o0/view
+//bookmyshow
+https://drive.google.com/file/d/1sFRpPiT7g3e-giiqt2Fuzara5Am_JtzE/view
+//hotelmanagemnet-uml
+https://drive.google.com/file/d/1QYX6zvIHREdJ6PjVt5-tVH-nj18F_-Zz/view
+//hotelmanagemnet-code
+https://drive.google.com/file/d/1GFDk4DBOtefSbuUioAQ5D3T2-cH9m47l/view
+
+//librabry-ms-uml
+https://drive.google.com/file/d/172ZnP1P0Gp3X5edtqjIMhlLRMWBVdaBv/view
+
+//library-ms-code
+https://drive.google.com/file/d/1Ei_-35j6jqAq716n4Skfa0-ohPlp4kma/view
+
+//shopping-card
+https://drive.google.com/file/d/1kGkbH0aTWl8riru9qX-dLG8MkBLlW2P9/view
+
+//atm-code
+https://drive.google.com/file/d/1jN0V5eCjETnI3XLfqCncWzapSLWPSqMV/view
+
+//chess-code
+https://drive.google.com/file/d/10nHLISCMcpgn6yl-0C1FgW303CLrD1S7/view
+
+//stackoverflow-code
+https://drive.google.com/file/d/1w7Hlq6bsafqghunb9xhqsCR2XMFY2e2f/view
+
+//elevator-code
+https://www.javastructures.com/design/elevator
+https://medium.com/geekculture/system-design-elevator-system-design-interview-question-6e8d03ce1b44
+https://leetcode.com/discuss/interview-question/object-oriented-design/124660/ood-design-elevator
+
+//find low-level-design-solution here
+https://github.com/prasadgujar/low-level-design-primer/blob/master/solutions.md
+
+
+//hld for user-notifaction-system
+https://github.com/codekarle/system-design/blob/master/system-design-prep-material/architecture-diagrams/Notification%20Service%20design.png
+
+//hld diagrams/
+https://github.com/codekarle/system-design/tree/master/system-design-prep-material/architecture-diagrams
+
+//hld
+https://www.codekarle.com/
+
+//uber hld
+https://imgur.com/a/c1Nkuvf
+
+//stock exchange hld
+https://imgur.com/lc2A9ph
+
+//https://github.com/prasadgujar/low-level-design-primer
+https://github.com/donnemartin/system-design-primer
+
+Tech Dummies Narendra + question for hld

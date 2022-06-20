@@ -1,0 +1,9 @@
+# Radisys for C profile #
+
+1st round - coding (mcq + 1 question)
+
+2nd round - technical interview
+
+3rd round - HR interview
+
+

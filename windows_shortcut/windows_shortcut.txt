@@ -1,0 +1,2 @@
+Shortcut for inverted colors.
+ctrl + window + c 

@@ -1,64 +1,52 @@
-# Algorithm
+from typing import List 
+from collections import defaultdict, deque
 
-# The algorithm of the topological sort goes like this:
+def topological_sort(tasks_list: List[List[int]]):
+    graph = dict()
+    indegree = dict()
+    q = list()
+    ans = list()
 
-#     Identify the node that has no in-degree(no incoming edges) and select that node as the source node of the graph
-#     Delete the source node with zero in-degree and also delete all its outgoing edges from the graph. Insert the deleted vertex in the result array.
-#     Update the in-degree of the adjacent nodes after deleting the outgoing edges
-#     Repeat step 1 to step 3 until the graph is empty
-
-# The resulting array at the end of the process is called the topological ordering of the directed acyclic graph. If due to some reason, there are some nodes left but they have the incoming edges, that means that the graph is not an acyclic graph and topological ordering does not exist.
-# Python Code For Topological Sort
-
-from collections import defaultdict
-
-class Graph:
-
-    def __init__(self,n):
-
-        self.graph = defaultdict(list)
-
-        self.N = n
-
-    def addEdge(self,m,n):
-
-        self.graph[m].append(n)
-
-    def sortUtil(self,n,visited,stack):
-
-        visited[n] = True
-
-        for element in self.graph[n]:
-
-            if visited[element] == False:
-
-                self.sortUtil(element,visited,stack)
-
-        stack.insert(0,n)
-
-    def topologicalSort(self):
-
-        visited = [False]*self.N
-
-        stack =[]
-
-        for element in range(self.N):
-
-            if visited[element] == False:
-
-                self.sortUtil(element,visited,stack)
-
-        print(stack)
-
-graph = Graph(5)
-graph.addEdge(0,1);
-graph.addEdge(0,3);
-graph.addEdge(1,2);
-graph.addEdge(2,3);
-graph.addEdge(2,4);
-graph.addEdge(3,4);
-
-print("The Topological Sort Of The Graph Is:  ")
-
-graph.topologicalSort()
-
+    # building graph and finding indegree
+    for tasks in tasks_list:
+        task, dependency = tasks
+        if not dependency in graph:
+            graph[dependency] = list()
+        graph[dependency].append(task)
+        
+        if not task in indegree:
+            indegree[task]=0
+        indegree[task]+=1
+        
+        if not dependency in indegree:
+            indegree[dependency]=0
+        
+            
+    # topology
+    for key in indegree:
+        degree = indegree[key]
+        if degree ==0:
+            q.append(key)
+    
+    while q:
+        task_done = q.pop(0)
+        ans.append(task_done)
+        if task_done in graph:
+            for dependent in graph[task_done]:
+                indegree[dependent]-=1
+                if indegree[dependent]==0:
+                    q.append(dependent)
+                    
+    # check whether all tasks are done or not
+    for key in indegree:
+        if indegree[key] > 0:
+            return []
+    return ans
+        
+if __name__=='__main__':
+    str_prerequistes = [['a', 'b'], ['a', 'c'], ['a', 'd'],[None,'e']] # Here e is independent task
+    print(topological_sort(str_prerequistes))
+    
+    prerequistes = [[1, 0], [2, 0], [3, 1], [3, 2]]
+    print(topological_sort(prerequistes))
+        

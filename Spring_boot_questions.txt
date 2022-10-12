@@ -1,0 +1,4 @@
+1. bean container vs application context
+2. dependency injection spring boot
+3. autowire in spring boot
+4. bean in java

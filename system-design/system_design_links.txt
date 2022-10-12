@@ -1,0 +1,6 @@
+1. ecommerce concurrency
+https://leetcode.com/discuss/interview-question/system-design/211415/interview-question-ecommerce-system-design-eg-amazon-concurrency-issues-handling
+
+
+
+

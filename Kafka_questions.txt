@@ -1,0 +1,2 @@
+1. compaction in kafka
+2. zookeebper vs kafka

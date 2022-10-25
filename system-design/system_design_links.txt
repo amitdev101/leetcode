@@ -2,5 +2,6 @@
 https://leetcode.com/discuss/interview-question/system-design/211415/interview-question-ecommerce-system-design-eg-amazon-concurrency-issues-handling
 
 
-
+2. All links for system design
+https://leetcode.com/discuss/interview-question/2734624/faang-solved-all-system-design-questions-with-tips-and-templates
 

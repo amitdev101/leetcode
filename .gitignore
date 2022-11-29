@@ -1,3 +1,8 @@
 *.history
 *.exe
 *.vscode/*
+
+# django files
+*.pyc
+*.sqlite3
+Projects/my_test_site/redis_docker/redis-persistence/*

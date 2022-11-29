@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:3.7.1'
+    ports:
+      - '2181:2181'
+    restart: always
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: 'bitnami/kafka:3.2.0'
+    container_name: kafka
+    ports:
+      - '9092:9092'
+    restart: always
+    environment:
+      # For localhost use below setting 
+      # - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092
+      # - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      # - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      
+      # for intercommunication use current settings
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9093,EXTERNAL://:9092
+      # - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://:9093,EXTERNAL://YOUR_SERVER_IP:9092
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    volumes:
+      - ./kafka_logs:/opt/bitnami/kafka/logs
+    depends_on:
+      - zookeeper

@@ -1,0 +1,62 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:14.4-alpine
+    container_name: my_test_site_db
+    restart: always
+    volumes:
+      - ./database/my_test_site_db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_NAME=my_test_site_db
+      - POSTGRES_USER=my_test_site_db
+      - POSTGRES_PASSWORD=my_test_site_db
+
+  kafkaconsumers:
+    build: ./
+    container_name: my_test_site_kafkaconsumers
+    volumes:
+      - ./:/usr/src/app
+    restart: always
+    command: bash -c "python manage.py startkafkaconsumers"
+    depends_on:
+      - my_test_site
+
+  my_test_site:
+    build: ./
+    container_name: my_test_site_main
+    restart: always
+    volumes:
+      - ./:/usr/src/app
+      - uwsgi_data:/tmp/uwsgi/
+      - ./my_test_site/static/:/usr/src/app/my_test_site/static/
+    # using uwsgi so no need to port mapping of my_test_site
+    # ports:
+    #   - 8000:8000 # machine_port:docker_port
+    environment:
+      - POSTGRES_NAME=my_test_site_db
+      - POSTGRES_USER=my_test_site_db
+      - POSTGRES_PASSWORD=my_test_site_db
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_PASSWORD=admin
+      - DJANGO_SUPERUSER_EMAIL=YOUR_EMAIL
+    command: bash -c ./my_test_site_startup.sh
+    depends_on:
+      - db
+  nginx:
+    build: ./nginx
+    container_name: my_test_site_nginx
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - uwsgi_data:/tmp/uwsgi/
+      - ./my_test_site/static/:/var/www/my_test_site/assets/:ro
+    ports:
+      - "8003:80"
+    depends_on:
+      - my_test_site
+
+volumes:
+  uwsgi_data:

@@ -1,0 +1,31 @@
+Q1- what is "spring-boot-starter-web" starter dependency?
+Ans :
+    In Spring Boot, a starter is a pre-packaged set of dependencies that you can add to your project to enable certain functionality. A starter includes a set of common or recommended dependencies that are typically used together to implement a specific feature or function.
+
+    For example, if you want to create a web application with Spring Boot, you can use the "spring-boot-starter-web" starter dependency. This starter includes all the necessary dependencies to build a web application, such as Spring MVC, embedded Tomcat server, Jackson JSON processor, and Spring Boot auto-configuration.
+
+    Using a starter dependency simplifies the process of configuring and managing dependencies in your project. You only need to add the starter dependency to your project's build file (e.g., pom.xml for Maven or build.gradle for Gradle), and Spring Boot takes care of pulling in all the required dependencies and setting up the appropriate configurations.
+
+    Spring Boot provides a wide range of starter dependencies for various use cases, including web applications, data access, security, testing, and more. You can explore the available starters on the Spring Boot website or in the project's documentation.
+
+Q2- what is @component annotation in spring boot?
+Ans :
+    The @Component annotation in Spring Boot is used to mark a class as a Spring component. Components are auto-detected by Spring's component scanning feature and can be injected into other Spring-managed beans using dependency injection.
+
+    When a class is annotated with @Component, Spring Boot will automatically register it as a bean in the application context. This allows you to use the class in other parts of your application, such as by injecting it into other beans or using it in a Spring MVC controller.
+
+    Here's an example of a class annotated with @Component:
+
+    java
+
+    import org.springframework.stereotype.Component;
+
+    @Component
+    public class MyComponent {
+        // Class implementation here
+    }
+
+    In this example, the MyComponent class is marked as a Spring component using the @Component annotation. When the application starts up, Spring Boot will automatically detect this class and register it as a bean in the application context.
+
+Q3 - what is dependency injection
+Ans : 

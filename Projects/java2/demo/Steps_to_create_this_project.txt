@@ -1,0 +1,2 @@
+1. Press F1 and hit >spring initializer then specify all the asked configs
+2. 

@@ -1,2 +1,31 @@
 1. compaction in kafka
-2. zookeebper vs kafka
+    In Kafka, compaction is a feature that allows a topic to maintain a more compact and efficient representation of its data. This is achieved by removing duplicate records and retaining only the latest version of each record based on a key value.
+    The main use case for compaction is to reduce storage costs when a topic contains a large number of records that have the same key, but different values. In such cases, it may be more efficient to keep only the most recent value for each key, rather than storing all the values. This can help to reduce disk usage and improve overall system performance.
+    To enable compaction for a topic in Kafka, you need to set the cleanup.policy parameter to compact in the topic configuration. Once compaction is enabled, Kafka will periodically scan the topic for records that can be compacted and remove the duplicates. By default, Kafka will perform compaction every 15 minutes, but you can adjust the frequency using the cleanup.ms parameter.
+    It's important to note that compaction in Kafka is based on the key value of the records, and it only works for topics that have a key-value structure. If a topic does not have a key, or if the key is not unique, then compaction may not be effective. Additionally, compaction may impact the ordering of records in the topic, as records may be removed and rearranged during the compaction process.
+
+
+2. zookeeper vs kafka
+
+
+3. In the context of distributed systems like Kafka, the terms "node," "cluster," and "broker" have specific meanings.
+    A "node" refers to a single server or computing instance that is part of a larger distributed system. In the case of Kafka, a node might be a single machine running a Kafka broker or other Kafka-related processes.
+    A "cluster" refers to a group of nodes that are interconnected and work together to provide a particular service. In the case of Kafka, a cluster is made up of multiple Kafka brokers, with each broker running on a separate node.
+    A "broker" refers to a single instance of the Kafka server that is responsible for storing and serving messages for one or more Kafka topics. Brokers communicate with each other to replicate and distribute messages across the Kafka cluster.
+    To put it another way, think of a Kafka cluster as a collection of Kafka brokers working together to provide a distributed messaging service. Each broker is a node in the cluster, and is responsible for storing and serving messages for one or more topics.
+    By having multiple brokers in the cluster, Kafka provides a number of benefits, including:
+        Increased fault tolerance: If one broker fails, the other brokers can continue to serve messages from the affected topic(s).
+        Increased scalability: As the number of topics or the volume of messages increases, more brokers can be added to the cluster to handle the load.
+        Improved performance: With multiple brokers handling incoming messages, Kafka can distribute the load across the cluster, improving overall performance and reducing latency.
+
+
+4. Kafka internal working
+    Sure, here are the high-level steps involved in how Kafka works internally:
+        Producers write messages to Kafka topics: Producers write messages to Kafka topics, which are essentially named feeds or streams of messages. Each message consists of a key and a value, both of which are binary data.
+        Kafka brokers receive and store messages: Kafka brokers receive the messages from the producers and store them in a distributed, fault-tolerant log structure called a topic partition. Each partition is replicated across multiple brokers for redundancy.
+        Consumers subscribe to topics and read messages: Consumers subscribe to one or more Kafka topics and read messages from the partitions assigned to them. Each consumer is assigned one or more partitions to read from, depending on the number of consumers in the same consumer group and the number of partitions in the topic.
+        Kafka tracks message offsets: Kafka tracks the offset of each message within each partition, which represents the position of the message in the partition. Consumers can read messages from a specific offset, allowing them to pick up where they left off if they need to stop and restart reading from a partition.
+        Kafka guarantees message ordering within partitions: Kafka guarantees that messages within a partition are stored and delivered in the order they were produced. This makes it easy to build applications that rely on the order of messages, such as event sourcing systems.
+        Kafka provides durability and fault tolerance: Kafka provides durability and fault tolerance by replicating topic partitions across multiple brokers. If one broker fails, another broker can take over its responsibilities, ensuring that messages are still available for consumption.
+        Kafka scales horizontally: Kafka scales horizontally by allowing you to add more brokers to a cluster. As more brokers are added, Kafka automatically rebalances the partition assignments across the brokers to ensure that each broker has an equal share of the workload.
+    Overall, Kafka's internal architecture is designed to provide high throughput, low latency, and fault tolerance, making it well-suited for building scalable, real-time data pipelines and streaming applications.

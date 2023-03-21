@@ -2,7 +2,8 @@
 1. Optimistic vs pessimistic locking
 2. locking in db avoid dirty reads
 3. Transaction Isolation Levels in DBMS
-4. 
+4. why db stores data in B+ trees
+5. 
 
 Optimistic Locking is a strategy where you read a record, take note of a version number (other methods to do this involve dates, timestamps or checksums/hashes) and check that the version hasn't changed before you write the record back. When you write the record back you filter the update on the version to make sure it's atomic. (i.e. hasn't been updated between when you check the version and write the record to the disk) and update the version in one hit.
 
@@ -13,3 +14,14 @@ This strategy is most applicable to high-volume systems and three-tier architect
 Pessimistic Locking is when you lock the record for your exclusive use until you have finished with it. It has much better integrity than optimistic locking but requires you to be careful with your application design to avoid Deadlocks. To use pessimistic locking you need either a direct connection to the database (as would typically be the case in a two tier client server application) or an externally available transaction ID that can be used independently of the connection.
 
 In the latter case you open the transaction with the TxID and then reconnect using that ID. The DBMS maintains the locks and allows you to pick the session back up through the TxID. This is how distributed transactions using two-phase commit protocols (such as XA or COM+ Transactions) work.
+
+5. why db stores data in B+ trees
+    Relational databases often use B+ trees as a data structure for storing data because they offer efficient search and retrieval capabilities for large datasets. B+ trees are a type of self-balancing tree structure that allows for fast retrieval of data by using an index to locate the relevant data quickly.
+    B+ trees have a number of advantages for database storage:
+        Balanced Tree: B+ trees are self-balancing, which means that even if the size of the tree changes due to insertion or deletion of elements, the tree remains balanced, and the search time is not affected.
+        Large Fanout: B+ trees have a large fanout, which means that they can hold a large number of keys in each node. This results in fewer levels of the tree and faster search times.
+        Sequential Access: B+ trees are optimized for sequential access, making them well-suited for range queries or scans of large amounts of data.
+        Disk Access Optimization: B+ trees have a special structure that optimizes disk access. The tree is designed in such a way that all leaf nodes are at the same depth, which ensures that a search will require only a fixed number of disk accesses.
+    Because of these advantages, B+ trees are widely used in relational databases as a way to store data efficiently and ensure fast retrieval times for queries.
+
+6. 

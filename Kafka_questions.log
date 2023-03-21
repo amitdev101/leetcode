@@ -1,3 +1,7 @@
+Kafka blog links
+1. https://www.confluent.io/blog/hands-free-kafka-replication-a-lesson-in-operational-simplicity/
+2. https://kafka.apache.org/documentation.html#replication
+
 1. compaction in kafka
     In Kafka, compaction is a feature that allows a topic to maintain a more compact and efficient representation of its data. This is achieved by removing duplicate records and retaining only the latest version of each record based on a key value.
     The main use case for compaction is to reduce storage costs when a topic contains a large number of records that have the same key, but different values. In such cases, it may be more efficient to keep only the most recent value for each key, rather than storing all the values. This can help to reduce disk usage and improve overall system performance.
@@ -6,6 +10,15 @@
 
 
 2. zookeeper vs kafka
+    what is the role of zookeeper in kafka
+    In Kafka, ZooKeeper plays a critical role in coordinating and managing the Kafka cluster.
+    Here are some of the key responsibilities of ZooKeeper in Kafka:
+        Cluster management: ZooKeeper keeps track of the configuration, status, and health of all the nodes in the Kafka cluster. It also helps in the election of a leader node, which is responsible for managing the state of the cluster.
+        Topic management: ZooKeeper stores the metadata about Kafka topics, such as the number of partitions, replication factor, and location of partition leaders. It also helps in creating, deleting, and updating topics.
+        Consumer group coordination: ZooKeeper helps in managing the offset of messages that have been consumed by a consumer group. It also keeps track of the consumers that are currently part of a group and their status.
+        Security: ZooKeeper provides authentication and authorization mechanisms for Kafka, which helps in securing the cluster from unauthorized access.
+    Overall, ZooKeeper is an essential component of Kafka, and it plays a crucial role in maintaining the reliability, availability, and scalability of the Kafka cluster.
+
 
 
 3. In the context of distributed systems like Kafka, the terms "node," "cluster," and "broker" have specific meanings.

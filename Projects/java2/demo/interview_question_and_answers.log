@@ -28,4 +28,4 @@ Ans :
     In this example, the MyComponent class is marked as a Spring component using the @Component annotation. When the application starts up, Spring Boot will automatically detect this class and register it as a bean in the application context.
 
 Q3 - what is dependency injection
-Ans : 
+Ans :

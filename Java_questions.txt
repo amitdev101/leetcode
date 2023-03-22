@@ -1,2 +1,2 @@
 1. Checked vs Unchecked Exceptions in Java
-2. 
+2. Why interface cannot have constructor while abstract base classes can have?

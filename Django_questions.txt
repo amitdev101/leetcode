@@ -1,3 +1,9 @@
+Questions list:
+    1. Django Filters Examples 
+    2. What is Q object?
+    3. what is abstract model in django?
+
+
 1. Django Filters Examples ?
     Yes, there are other ways to use the Django filter based on your use case. Here are a few more examples:
     Filter using exact match:
@@ -37,3 +43,18 @@
     In the above code, we have combined multiple conditions using Q objects and used logical operators like & and | to group them together. This query would be difficult to construct using the regular filter method.
 
 
+3. what is abstract model in django?
+    In Django, an abstract model is a model that is not meant to be instantiated or saved to the database, but rather serves as a base class for other models to inherit from. Abstract models are defined using the abstract = True option in the model's Meta class.
+    When a model is defined as abstract, Django will not create a database table for it. Instead, it will use the fields and methods defined in the abstract model as a basis for creating the tables of any model that inherits from it.
+    Here's an example of an abstract model in Django:
+        from django.db import models
+        class BaseModel(models.Model):
+            created = models.DateTimeField(auto_now_add=True)
+            updated = models.DateTimeField(auto_now=True)
+
+            class Meta:
+                abstract = True
+
+        class MyModel(BaseModel):
+            name = models.CharField(max_length=50)
+            

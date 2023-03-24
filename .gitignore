@@ -7,3 +7,10 @@
 *.sqlite3
 Projects/my_test_site/redis_docker/redis-persistence/*
 *database*
+*/.idea/*
+*/out/*
+Data-structure/java/*
+!Data-structure/java/*.java
+
+Projects/java2/Java_dsa/*
+!Projects/java2/Java_dsa/*.java

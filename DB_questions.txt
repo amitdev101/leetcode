@@ -2,18 +2,18 @@
 1. Optimistic vs pessimistic locking
 2. locking in db avoid dirty reads
 3. Transaction Isolation Levels in DBMS
-4. why db stores data in B+ trees
-5. 
+5. why db stores data in B+ trees
+6. SQL vs NoSQL difference
+7. what is ACID in database
+8. Isolation levels in db
+9. what is phantom read and how to prevent it
 
-Optimistic Locking is a strategy where you read a record, take note of a version number (other methods to do this involve dates, timestamps or checksums/hashes) and check that the version hasn't changed before you write the record back. When you write the record back you filter the update on the version to make sure it's atomic. (i.e. hasn't been updated between when you check the version and write the record to the disk) and update the version in one hit.
-
-If the record is dirty (i.e. different version to yours) you abort the transaction and the user can re-start it.
-
-This strategy is most applicable to high-volume systems and three-tier architectures where you do not necessarily maintain a connection to the database for your session. In this situation the client cannot actually maintain database locks as the connections are taken from a pool and you may not be using the same connection from one access to the next.
-
-Pessimistic Locking is when you lock the record for your exclusive use until you have finished with it. It has much better integrity than optimistic locking but requires you to be careful with your application design to avoid Deadlocks. To use pessimistic locking you need either a direct connection to the database (as would typically be the case in a two tier client server application) or an externally available transaction ID that can be used independently of the connection.
-
-In the latter case you open the transaction with the TxID and then reconnect using that ID. The DBMS maintains the locks and allows you to pick the session back up through the TxID. This is how distributed transactions using two-phase commit protocols (such as XA or COM+ Transactions) work.
+1. Optimistic vs pessimistic locking
+    Optimistic Locking is a strategy where you read a record, take note of a version number (other methods to do this involve dates, timestamps or checksums/hashes) and check that the version hasn't changed before you write the record back. When you write the record back you filter the update on the version to make sure it's atomic. (i.e. hasn't been updated between when you check the version and write the record to the disk) and update the version in one hit.
+    If the record is dirty (i.e. different version to yours) you abort the transaction and the user can re-start it.
+    This strategy is most applicable to high-volume systems and three-tier architectures where you do not necessarily maintain a connection to the database for your session. In this situation the client cannot actually maintain database locks as the connections are taken from a pool and you may not be using the same connection from one access to the next.
+    Pessimistic Locking is when you lock the record for your exclusive use until you have finished with it. It has much better integrity than optimistic locking but requires you to be careful with your application design to avoid Deadlocks. To use pessimistic locking you need either a direct connection to the database (as would typically be the case in a two tier client server application) or an externally available transaction ID that can be used independently of the connection.
+    In the latter case you open the transaction with the TxID and then reconnect using that ID. The DBMS maintains the locks and allows you to pick the session back up through the TxID. This is how distributed transactions using two-phase commit protocols (such as XA or COM+ Transactions) work.
 
 5. why db stores data in B+ trees
     Relational databases often use B+ trees as a data structure for storing data because they offer efficient search and retrieval capabilities for large datasets. B+ trees are a type of self-balancing tree structure that allows for fast retrieval of data by using an index to locate the relevant data quickly.
@@ -24,4 +24,41 @@ In the latter case you open the transaction with the TxID and then reconnect usi
         Disk Access Optimization: B+ trees have a special structure that optimizes disk access. The tree is designed in such a way that all leaf nodes are at the same depth, which ensures that a search will require only a fixed number of disk accesses.
     Because of these advantages, B+ trees are widely used in relational databases as a way to store data efficiently and ensure fast retrieval times for queries.
 
-6. 
+6. SQL vs NoSQL difference
+    SQL and NoSQL are two different types of database management systems, each with its own strengths and weaknesses. Here are some key differences between them:
+    Data structure: SQL databases use a structured data model, where data is stored in tables with predefined columns and data types, and relationships between tables are established using foreign keys. NoSQL databases, on the other hand, can use various data models, including document-based, key-value, graph-based, or column-based.
+    Scalability: SQL databases are vertically scalable, which means that to increase their capacity, you need to add more resources (CPU, memory, storage) to a single server. NoSQL databases, on the other hand, are horizontally scalable, which means that to increase their capacity, you need to add more servers to a cluster.
+    Flexibility: SQL databases have a rigid schema that defines the structure of the data, and any changes to the schema require altering the database structure and migrating the data. NoSQL databases, on the other hand, are schema-less or schema-flexible, which allows for more agile development and easier handling of unstructured or semi-structured data.
+    Query language: SQL databases use a standardized query language (SQL) that is optimized for relational data models and provides powerful querying capabilities, such as filtering, sorting, grouping, joining, and aggregating data. NoSQL databases often have their own query languages or APIs that are optimized for their specific data models and use cases.
+    ACID compliance: SQL databases are generally ACID compliant, which means that they provide guarantees of data consistency, integrity, and durability in transactions. NoSQL databases, on the other hand, often prioritize performance and scalability over strict consistency, and may not provide full ACID compliance.
+    In summary, SQL databases are better suited for structured data and complex queries, while NoSQL databases are better suited for unstructured or semi-structured data, horizontal scalability, and flexible data models. However, the choice between the two ultimately depends on the specific requirements of the project or application.
+
+7. what is ACID in database
+    ACID is an acronym that stands for Atomicity, Consistency, Isolation, and Durability, which are the four properties that ensure the reliability, consistency, and accuracy of data in a database system.
+    Atomicity: This property ensures that a transaction is treated as a single, indivisible unit of work. It means that either all the operations in a transaction are executed successfully or none of them are. If a failure occurs during the execution of a transaction, the database system must roll back the changes made to the database, so that the data remains in a consistent state.
+    Consistency: This property ensures that the data in the database always satisfies a set of predefined rules, constraints, and relationships. It means that every transaction must maintain the integrity and validity of the data, and if a transaction violates any constraint or rule, it must be rolled back.
+    Isolation: This property ensures that concurrent transactions do not interfere with each other's execution and that they are executed in isolation. It means that transactions must be executed in a way that their intermediate states are not visible to other transactions until they are committed.
+    Durability: This property ensures that once a transaction is committed, its changes are permanent and will survive any subsequent failures, such as power outages, crashes, or network errors. It means that the changes made to the database must be recorded in a durable storage medium, such as a hard disk or a solid-state drive.
+    Together, these four properties form the basis of a reliable and consistent database system that can handle multiple transactions concurrently and recover from failures without losing data or violating data integrity. ACID compliance is essential for applications that require a high degree of data accuracy, such as financial systems, e-commerce sites, and healthcare applications.
+
+8. Isolation levels in db 
+    Isolation level in a database is a property that determines how transactions interact with each other and how the database ensures consistency and correctness of the data in a multi-user environment. There are several isolation levels defined in most database systems, each with its own set of guarantees, trade-offs, and performance characteristics. Here are the four most common isolation levels:
+        Read Uncommitted: This is the lowest isolation level, where transactions can read data that has been modified but not yet committed by other transactions, leading to dirty reads. This level provides the highest level of concurrency, but it can also result in inconsistent or incorrect data.
+        Read Committed: This level ensures that a transaction can only read data that has been committed by other transactions, avoiding dirty reads. However, it still allows non-repeatable reads, where the same query can return different results within the same transaction if other transactions modify the data. This level is suitable for applications that require moderate consistency and concurrency.
+        Repeatable Read: This level ensures that a transaction can read the same data consistently throughout its execution, avoiding non-repeatable reads. It also prevents phantom reads, where a query returns new rows that are added by other transactions during the same transaction. However, it still allows write skews, where two transactions can update the same row concurrently, leading to conflicting changes. This level is suitable for applications that require higher consistency than read committed level.
+        Serializable: This is the highest isolation level, where transactions are executed as if they were running serially, with no overlapping effects. It ensures the strongest consistency guarantees by preventing all anomalies, including dirty reads, non-repeatable reads, phantom reads, and write skews. However, it can also cause a high degree of contention, blocking, and reduced concurrency, making it suitable for only specific use cases that require high consistency.
+    It's important to note that higher isolation levels come at the cost of reduced concurrency, increased contention, and decreased performance, so it's necessary to choose the appropriate isolation level based on the specific requirements and trade-offs of the application or use case.
+
+9. what is phantom read and how to prevent it. 
+    A phantom read is a phenomenon that can occur in databases when a transaction reads data that appears to be consistent with a previous query but includes new rows that weren't there before. This can happen when two transactions are accessing the same data simultaneously, and one transaction inserts new rows while the other transaction is reading the same data.
+    Phantom reads occur because of a transaction isolation level known as "repeatable read." This isolation level ensures that if a transaction reads a set of rows at a certain point in time, it will always see those same rows until the transaction is complete. However, it doesn't prevent new rows from being added to the table during the transaction, which can lead to phantom reads.
+    For example, suppose Transaction A queries a table and returns a set of rows. Then, before Transaction A completes, Transaction B inserts new rows that match the criteria of Transaction A's query. If Transaction A queries the same table again, it will see the new rows that were inserted by Transaction B, even though they weren't present during the first query.
+    To avoid phantom reads, a higher isolation level can be used, such as serializable isolation, which prevents any concurrent transactions from modifying the data being accessed. However, this can result in decreased performance and increased blocking of concurrent transactions.
+
+    Yes, there are several ways to prevent phantom reads in addition to using a higher isolation level or a locking mechanism. Here are a few examples:
+    Use optimistic concurrency control: This approach involves adding a version number or timestamp to each row in the database, and checking this value before updating or deleting the row. If the value has changed since the row was read, the transaction will fail, preventing phantom reads. This approach can be useful in scenarios where conflicts are infrequent and locking overhead is not desirable.
+    Use snapshot isolation: This is a type of transaction isolation that allows each transaction to see a consistent snapshot of the database at the start of the transaction. This ensures that the transaction will not see any changes made by concurrent transactions during its execution, preventing phantom reads. Snapshot isolation can be useful in scenarios where read-heavy workloads are common.
+    Use index-range locking: This approach involves locking a range of values in an index, rather than locking individual rows. This can prevent phantom reads, as any changes made to the index within the locked range will be visible to the transaction. However, index-range locking can lead to increased contention and decreased performance in scenarios with high concurrency.
+    Use a different database architecture: In some cases, changing the underlying database architecture can help prevent phantom reads. For example, using a distributed database with strong consistency guarantees can ensure that transactions see a consistent view of the data across all nodes, preventing phantom reads.
+    Overall, the best approach to preventing phantom reads will depend on the specific requirements of your application and the underlying database technology being used.
+

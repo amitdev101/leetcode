@@ -52,6 +52,13 @@ public class Main {
                 return entry.getKey();
             }
         }
+        for(Character c : frequencyMap.keySet()){
+            Integer val = frequencyMap.get(c);
+            if(val==1){
+                return c;
+            }
+        }
+        
 
         return null;
     }

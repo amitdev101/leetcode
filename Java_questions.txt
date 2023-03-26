@@ -1,2 +1,69 @@
 1. Checked vs Unchecked Exceptions in Java
 2. Why interface cannot have constructor while abstract base classes can have?
+3. How to create an immutable class in Java?
+4. Design a thread safe singleton class
+5. Volatile and synchronized meaning?
+
+2. Why interface cannot have constructor while abstract base classes can have?
+    The main reason why an interface cannot have a constructor while an abstract base class can have one is that they serve different purposes. A constructor is used to initialize the state of an object, whereas an interface is not an object and does not have any state to initialize.
+    Furthermore, an interface does not provide any implementation of its methods, so it does not need a constructor to initialize any instance variables or perform any other initialization tasks. An abstract base class, on the other hand, may have instance variables and implementation details that need to be initialized in the constructor.
+
+
+
+
+3. How to create an immutable class in Java?
+    Declare the class as final to prevent inheritance.
+    Declare all instance variables as private and final to prevent modification.
+    Provide no setter methods for the instance variables.
+    If the class contains mutable objects, make sure to create defensive copies of them in the constructor to prevent external modification.
+    Avoid exposing any internal mutable objects in the public API.
+
+    Here's an example implementation of an immutable class called Person:
+    public final class Person {
+        private final String name;
+        private final int age;
+        private final List<String> hobbies;
+
+        public Person(String name, int age, List<String> hobbies) {
+            this.name = name;
+            this.age = age;
+            this.hobbies = new ArrayList<>(hobbies);
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public List<String> getHobbies() {
+            return new ArrayList<>(hobbies);
+        }
+    }
+
+
+4. Design a thread safe singleton class
+    public class ThreadSafeSingleton {
+        private static volatile ThreadSafeSingleton instance;
+
+        private ThreadSafeSingleton() {
+            // private constructor to prevent instantiation from outside the class
+        }
+
+        public static ThreadSafeSingleton getInstance() {
+            if (instance == null) {
+                synchronized (ThreadSafeSingleton.class) {
+                    if (instance == null) {
+                        instance = new ThreadSafeSingleton();
+                    }
+                }
+            }
+            return instance;
+        }
+    }
+
+    
+5. volatile and synchronized meaning?
+    In summary, volatile is used to ensure that a variable's value is always read directly from memory, while synchronized is used to ensure that only one thread can execute a block of code or method at a time, preventing multiple threads from accessing the same shared data at the same time and ensuring thread safety in multi-threaded programs.

@@ -4,6 +4,8 @@
 4. Design a thread safe singleton class
 5. Volatile and synchronized meaning?
 6. https://javarevisited.blogspot.com/2021/09/microservices-design-patterns-principles.html
+7. Optional interfaces in java 8
+
 
 2. Why interface cannot have constructor while abstract base classes can have?
     The main reason why an interface cannot have a constructor while an abstract base class can have one is that they serve different purposes. A constructor is used to initialize the state of an object, whereas an interface is not an object and does not have any state to initialize.

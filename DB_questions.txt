@@ -7,6 +7,8 @@
 7. what is ACID in database
 8. Isolation levels in db
 9. what is phantom read and how to prevent it
+10. Why NoSQL is more scalable than SQL?
+11. https://softwareengineering.stackexchange.com/questions/194340/why-are-nosql-databases-more-scalable-than-sql
 
 1. Optimistic vs pessimistic locking
     Optimistic Locking is a strategy where you read a record, take note of a version number (other methods to do this involve dates, timestamps or checksums/hashes) and check that the version hasn't changed before you write the record back. When you write the record back you filter the update on the version to make sure it's atomic. (i.e. hasn't been updated between when you check the version and write the record to the disk) and update the version in one hit.
@@ -62,3 +64,17 @@
     Use a different database architecture: In some cases, changing the underlying database architecture can help prevent phantom reads. For example, using a distributed database with strong consistency guarantees can ensure that transactions see a consistent view of the data across all nodes, preventing phantom reads.
     Overall, the best approach to preventing phantom reads will depend on the specific requirements of your application and the underlying database technology being used.
 
+
+10. Why NoSQL is more scalable than SQL?
+    Yes, that is correct. LSM (Log-Structured Merge) trees are designed to be better suited for write-heavy workloads, while B-trees are more suited for read-heavy workloads.
+
+    In an LSM tree, data is first written to a log, which is an append-only data structure. This allows for fast writes and eliminates the need for expensive index updates that are required in a B-tree. However, since data is not indexed immediately, reads may require scanning multiple levels of the LSM tree to find the required data, which can be slower than in a B-tree.
+
+    To address this issue, LSM trees periodically merge the log and the indexed data, creating a new sorted index. This process converts random writes into sequential writes, which can be more efficiently written to disk. While this periodic merging can result in occasional spikes in write performance, on average, an LSM tree will perform better for write-heavy workloads.
+
+    In contrast, B-trees provide fast access to indexed data, making them more suited for read-heavy workloads. B-trees maintain a balanced tree structure and perform index updates immediately upon write operations, ensuring that data is always indexed and available for fast access. However, this comes at the cost of more expensive write operations, which can slow down write-heavy workloads.
+
+    Overall, the choice between LSM trees and B-trees depends on the specific requirements of the application and the workload. LSM trees are a good choice for write-heavy workloads where fast writes are critical, while B-trees are a good choice for read-heavy workloads where fast access to indexed data is important.
+
+
+11. 

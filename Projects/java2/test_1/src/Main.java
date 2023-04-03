@@ -1,3 +1,6 @@
+import javafx.util.Builder;
+
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,6 +13,7 @@ public class Main {
         for(Character c: result.keySet()){
             System.out.println(c +" "+ result.get(c));
         }
+
 //        String s = null;
         Optional<String> optionalS = Optional.ofNullable(s);
         if(optionalS.isPresent()){
@@ -18,6 +22,8 @@ public class Main {
         else {
             // it's null
         }
+
+
 
     }
 }

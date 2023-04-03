@@ -1,0 +1,4 @@
+1. services.
+2. messaging queue (Kafka)
+3. fallback mechanism
+4. 

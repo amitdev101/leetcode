@@ -9,6 +9,8 @@
 9. what is phantom read and how to prevent it
 10. Why NoSQL is more scalable than SQL?
 11. https://softwareengineering.stackexchange.com/questions/194340/why-are-nosql-databases-more-scalable-than-sql
+12. how many masters and replicas do redis cluster maintain?
+
 
 1. Optimistic vs pessimistic locking
     Optimistic Locking is a strategy where you read a record, take note of a version number (other methods to do this involve dates, timestamps or checksums/hashes) and check that the version hasn't changed before you write the record back. When you write the record back you filter the update on the version to make sure it's atomic. (i.e. hasn't been updated between when you check the version and write the record to the disk) and update the version in one hit.
@@ -77,4 +79,13 @@
     Overall, the choice between LSM trees and B-trees depends on the specific requirements of the application and the workload. LSM trees are a good choice for write-heavy workloads where fast writes are critical, while B-trees are a good choice for read-heavy workloads where fast access to indexed data is important.
 
 
-11. 
+11. how many masters and replicas do redis cluster maintain?
+    In Redis Cluster, each shard (also known as a slot) has a master and one or more replicas. By default, Redis Cluster creates one replica for each master, but it is also possible to configure a different number of replicas per master.
+
+    When a master fails, one of its replicas is promoted to the new master, and a new replica is created for the new master. Redis Cluster uses a consensus protocol called Raft to ensure that the failover process is reliable and consistent.
+
+    The number of masters and replicas in a Redis Cluster depends on the number of nodes in the cluster and the number of hash slots that are configured. Each node can be responsible for one or more hash slots, and each hash slot can have one master and one or more replicas.
+
+    For example, if you have a Redis Cluster with 6 nodes, and you configure 16384 hash slots, each node will be responsible for approximately 2730 hash slots. If you have one master and one replica per hash slot, you will have a total of 16384 masters and 16384 replicas in the cluster.
+
+    However, it's important to note that having too many replicas can have a negative impact on the performance of the cluster, as each replica increases the amount of network traffic and memory usage. Therefore, it's important to balance the number of replicas with the need for high availability and fault tolerance.

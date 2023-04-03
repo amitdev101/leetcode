@@ -2,6 +2,13 @@ Questions list:
     1. Django Filters Examples 
     2. What is Q object?
     3. what is abstract model in django?
+    4. redis and redis-cluster
+    5. routers.py and Proxysql working.
+    6. mongodb atlas working
+    7. In a distributed environment how you can achieve locks with redis?
+    8. which is better zookeeper or redis locks in distributed environment?
+    9. 
+
 
 
 1. Django Filters Examples ?

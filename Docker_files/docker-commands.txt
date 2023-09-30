@@ -1,0 +1,8 @@
+1. docker ps -a
+2. docker compose up -d
+3. docker compose -f my_docker_compose_file up -d 
+4. docker compose -f my_docker_compose_file logs -f 
+5. docker stats <container_id>
+6. docker-compose up --build -d  [For build and run like jars etc]
+7. docker-compose logs --tail=100 --follow
+8. 

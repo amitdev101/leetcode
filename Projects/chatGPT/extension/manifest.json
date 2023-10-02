@@ -1,0 +1,14 @@
+{
+    "manifest_version": 2,
+    "name": "Page Data Reader",
+    "version": "1.0",
+    "description": "Reads data from the current page.",
+    "permissions": ["activeTab"],
+    "browser_action": {
+       "default_popup": "popup.html",
+       "default_icon": {
+          "48": "icon.png"
+       }
+    }
+  }
+  

@@ -8,10 +8,10 @@ setInterval(function() {
                 console.log("Received command:", command);
                 // TODO: Implement logic to execute the command on the current tab or as needed.
                 const dataToSend = {
-                    message: "The message or data you want to send to Telegram"
+                    "response": "The message or data you want to send to Telegram"
                 };
                 
-                fetch('http://YOUR_DJANGO_SERVER_URL/send_to_telegram/', {
+                fetch('http://localhost:8000/myapp/send_to_telegram/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

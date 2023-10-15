@@ -6,6 +6,7 @@ import requests
 BACKEND_SERVER = ''
 CHAT_ID = 1
 TOKEN = ''
+bot = telepot.Bot(TOKEN)
 
 def handle(msg):
     # Extracting content type, chat type, and chat ID from the incoming message.
@@ -27,11 +28,20 @@ def handle(msg):
                 bot.sendMessage(chat_id, "Failed to process command.")
 
 
-# Replace with your bot token obtained from BotFather.
-bot = telepot.Bot(TOKEN)
-# Initiating the message loop to keep listening for incoming messages.
-MessageLoop(bot, handle).run_as_thread()
-print('Bot is listening ...')
-# Keeping the script running.
-while True:
-    time.sleep(10)
+def send_msg(msg: str):
+    bot.sendMessage(CHAT_ID, msg)
+
+
+def main():
+    # Replace with your bot token obtained from BotFather.
+    bot = telepot.Bot(TOKEN)
+    # Initiating the message loop to keep listening for incoming messages.
+    MessageLoop(bot, handle).run_as_thread()
+    print('Bot is listening ...')
+    # Keeping the script running.
+    while True:
+        time.sleep(10)
+        
+        
+if __name__ == '__main__':
+    main()

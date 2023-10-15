@@ -1,6 +1,8 @@
 from django.http import JsonResponse
 from .models import Command
 from .utils import allow_cors
+from .bot_startup import send_msg
+import json
 
 def receive_command(request):
     if request.method == "POST":
@@ -35,10 +37,14 @@ def chrome_extension(request):
     # command = request.GET.get('command', '')
     return fetch_command(request)
 
-
+@allow_cors
 def send_to_telegram(request):
+    print("send to telegram ", request)
     if request.method == "POST":
-        response = request.POST.get('response')
+        data = json.loads(request.body.decode('utf-8'))
+        print(data)  # Log the received data to see its content
         # ? Here you should call the function to send a message to the bot
-        
+        response = data["response"]
+        print("response: ", response)
+        send_msg(response)
         return JsonResponse({"response":response})

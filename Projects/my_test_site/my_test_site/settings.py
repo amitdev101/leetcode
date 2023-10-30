@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'telegram_bot',
     'corsheaders',  # Add this line
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +126,16 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# here we have set channel layer to redis channel layer but there is a InMemoryChannelLayer(doesn't support horizontal scaling and states across servers) as well.
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('localhost', 6379)],  # Point this to your Redis server
+        },
+    },
+}
+
+# Use the channels layer as the default backend for Django's ASGI interface
+ASGI_APPLICATION = 'my_test_site.asgi.application'

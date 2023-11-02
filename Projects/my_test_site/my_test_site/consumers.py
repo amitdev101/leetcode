@@ -9,4 +9,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
         pass  # Add disconnect handling if needed
 
     async def receive(self, text_data):
-        await self.send(text_data=text_data)
+        response = "server recieved your message : " + text_data
+        await self.send(text_data=response)

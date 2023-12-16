@@ -7,7 +7,7 @@ Questions list:
     6. mongodb atlas working
     7. In a distributed environment how you can achieve locks with redis?
     8. which is better zookeeper or redis locks in distributed environment?
-    9. 
+    9. what is related_to?
 
 
 

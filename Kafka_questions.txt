@@ -42,3 +42,11 @@ Kafka blog links
         Kafka provides durability and fault tolerance: Kafka provides durability and fault tolerance by replicating topic partitions across multiple brokers. If one broker fails, another broker can take over its responsibilities, ensuring that messages are still available for consumption.
         Kafka scales horizontally: Kafka scales horizontally by allowing you to add more brokers to a cluster. As more brokers are added, Kafka automatically rebalances the partition assignments across the brokers to ensure that each broker has an equal share of the workload.
     Overall, Kafka's internal architecture is designed to provide high throughput, low latency, and fault tolerance, making it well-suited for building scalable, real-time data pipelines and streaming applications.
+
+
+5. How to maintain order in partition in kafka
+    when you send the msg to a topic then you can also specify the key as well.
+        From this key kafka can determine which partition should the msg go.
+        Here in this partition it will be guaranteed that msg with same key will be in same order as they have been received.
+
+        

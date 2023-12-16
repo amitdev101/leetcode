@@ -1,0 +1,106 @@
+
+ [1]->[]  [2]->[] [3]-> —---- [n] ->
+
+Reverse this linked list 
+
+Class ListNode : 
+	Def __init__(self, value=0, next=None):
+		Self.value = value
+		Self.next = next
+
+Def reverse_linked_list(head):
+	Prev = None
+	Current = head
+
+	While current : 
+		Next_node = current.next
+		Current.next = prev
+		Prev = current
+		Current = next_node
+
+	Return prev
+
+
+Def print_linked_list(head):
+	Current = head
+	While current:
+		print(current.value, end=’->’)
+		Current = current.next
+	print(“None”)
+
+Head = ListNode(1, ListNode(2, ListNode(3, ListNode(4))))
+
+print(“original linked list : )
+print_linked_list(head)
+
+Reversed_head = reverse_linked_list(head)
+
+print(“reversed linked list”)
+print_linked_list(reversed_head)
+
+
+
+
+
+Zomato like service -> 
+NF : System should be scalable , fault tolerant 
+Roles : Users
+
+Functional: 
+
+
+Listing of restos- get api 
+Searching of dishes/restos 
+Selection of dishes 
+Order Placement 
+– Order Tracking
+
+APIs you need: 
+	Place order, update order status, payment processing
+Get /api/restaurants
+Parameters : location 
+Cuisine
+Rating
+
+	
+
+	/Get /api/search
+		Parameters : query
+				Type : restaurant,dish etc
+
+	Selection of dishes
+	GET  /api/restaurants/{restaurantId}/dishes
+
+Order placement
+POST /api/orders
+Request Body: userId
+restaurantId
+Items
+deliveryAddress
+Response : orderId (str)
+estimatedDeliveryTime 
+
+
+Order Tracking
+GET /api/orders/{orderId}/status
+Response : status : (preparing or out for delivery or Delivered}
+EstimatedDeliveryTime 	
+
+Search (“query”) -> (bloom filters, elastic search)  
+
+
+
+Middlewares - 
+Filter - black listing user
+Rate limiter - otp limits, prevent dos attacks 
+Logging : track journey
+
+
+Databases : 
+MongoDB : For listing restaurants, menu, reviews, (Flexible in storing different type of data)
+MySQL : For orders tracking (Transactional integrity)
+Search Service : Elastic search. (Fast search and efficient at handling large volume of data)
+Caching : Redis (In Memory db To cache frequent query and reduce database load.) 
+ If fails we can fallback to db, and read through caching pattern .
+Redis should be in clustered mode to prevent single point of failure)
+

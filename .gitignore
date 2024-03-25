@@ -14,3 +14,4 @@ Data-structure/java/*
 
 Projects/java2/Java_dsa/*
 !Projects/java2/Java_dsa/*.java
+Docker_files/jupyter_notebook/data/*

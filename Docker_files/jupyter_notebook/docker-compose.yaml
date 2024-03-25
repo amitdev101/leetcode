@@ -1,0 +1,10 @@
+version: '3'
+services:
+  jupyter:
+    image: jupyter/datascience-notebook
+    volumes:
+      - ./data:/home/jovyan/work  # Mounts the current directory into the container
+    ports:
+      - "8888:8888"  # Exposes Jupyter on port 8888
+    environment:
+      - JUPYTER_ENABLE_LAB=yes  # Optional: run JupyterLab instead of classic Jupyter Notebook

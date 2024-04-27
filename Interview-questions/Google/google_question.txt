@@ -1,0 +1,2 @@
+1. there are islands represented by 0 and 1 in binary tree. 
+how to find number of islands. + now find islands of different sizes as well.

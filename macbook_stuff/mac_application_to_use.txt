@@ -1,0 +1,14 @@
+1. Ubar 
+2. AltTab
+3. Rectangle
+4. Reverse Scroll
+5. Electerm
+6. Tabby
+7. Free download manager
+8. KeepmeAwake
+9. Iglance
+
+# common development softwares
+1. DbGate
+2. Pycharm
+3. Vscode

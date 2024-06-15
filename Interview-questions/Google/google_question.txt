@@ -1,2 +1,9 @@
 1. there are islands represented by 0 and 1 in binary tree. 
 how to find number of islands. + now find islands of different sizes as well.
+
+2. Find the number of cities with certain time you can visite from node A to node B with the given time T.
+    you are provided the nodes and Time to reach from node a to node b. Here cities = Nodes.
+
+3. You are given an array of V shape that it is first strictly decreasing and then increasing. 
+    Your task is to find the lowest point with better complexity other than O(N)
+    this was tricky as it can contain duplicate elements.

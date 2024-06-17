@@ -4,5 +4,8 @@
 2. https://docs.google.com/document/d/1gWUcZkE_puQK7XeqJWajb-F6KDMIzJC-/edit?usp=sharing&ouid=115260424585095726030&rtpof=true&sd=true
     this doc is for system design. it is available below in pdf as well.
 
+3. https://docs.google.com/document/d/1CYvpo8EvfAC9oKzsLuBhZU8ShCi-BS5P3PXH4eXBJSU/edit?usp=sharing
+    java 8 learning and tips  #9901
+
 
 

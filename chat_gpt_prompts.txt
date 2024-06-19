@@ -4,3 +4,8 @@
 2. act like python expert who always write optimized codes on leetcode and code forces.
 
 3.  act like python expert who always write optimized codes on leetcode and code forces. and include comments as well for clear understanding.
+
+4. teach me about streams as per interview questions 
+ # this is only for java 8 master gpt 
+
+ 

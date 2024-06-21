@@ -70,3 +70,11 @@
     
 5. volatile and synchronized meaning?
     In summary, volatile is used to ensure that a variable's' value is always read directly from memory, while synchronized is used to ensure that only one thread can execute a block of code or method at a time, preventing multiple threads from accessing the same shared data at the same time and ensuring thread safety in multi-threaded programs.
+
+
+6. What is the difference between String, StringBuilder, and StringBuffer?
+
+    Answer:
+        String: Immutable, not thread-safe.
+        StringBuilder: Mutable, not thread-safe, and faster.
+        StringBuffer: Mutable, thread-safe due to synchronized methods.

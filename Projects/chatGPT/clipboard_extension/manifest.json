@@ -1,0 +1,22 @@
+{
+    "manifest_version": 2,
+    "name": "Clean and Copy",
+    "version": "1.0",
+    "description": "Cleans HTML content and copies it to the clipboard.",
+    "icons": {
+      "48": "icon.png"
+    },
+    "permissions": [
+      "activeTab",
+      "clipboardWrite"
+    ],
+    "browser_action": {
+      "default_icon": "icon.png",
+      "default_title": "Clean and Copy"
+    },
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    }
+  }
+  

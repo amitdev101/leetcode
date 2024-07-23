@@ -5,3 +5,6 @@ https://leetcode.com/discuss/interview-question/system-design/211415/interview-q
 2. All links for system design
 https://leetcode.com/discuss/interview-question/2734624/faang-solved-all-system-design-questions-with-tips-and-templates
 
+
+3. A better github repo link to design multiple systems
+https://github.com/tssovi/grokking-the-object-oriented-design-interview/tree/master

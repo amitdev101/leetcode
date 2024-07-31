@@ -34,6 +34,7 @@ def test():
     value = redis_connection.get('my_test_key')
     value = value.decode("UTF-8")
     print(value)
+    print(redis_connection.keys('*'))
 
 
 if __name__=='__main__':

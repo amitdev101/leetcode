@@ -1,0 +1,7 @@
+In BNPL product allows for multiple purchases up to a credit limit (similar to a revolving credit account), the Credit Card Service calculates interest on any outstanding balances not paid off by the due date. LMS might still play a role if these balances eventually convert into a formal loan with fixed payments.
+Even though the customer interacts with the BNPL service as if it were a single revolving credit account, the backend may consist of multiple distinct loans. This approach provides a balance between offering a seamless user experience and maintaining detailed control over the financial products offered to each customer
+interest will be calculated by creditservice becuase we have to post interest daily for the custome and late fee by lms
+
+Choreography-Based Saga
+
+    Decentralized Coordination: In this variant, there's no central orchestrator. Instead, each service involved in the transaction independently decides what to do next based on events it receives.

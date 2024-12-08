@@ -6,6 +6,7 @@ from datetime import datetime
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 import requests
+import json
 
 # Configurable Constants
 BOT_TOKEN = "YOUR_BOT_TOKEN"
@@ -52,13 +53,26 @@ def load_offset():
     return None
 
 def save_text_message(chat_id, text):
-    """Save text messages to a file."""
+    """Save text messages to a JSON file with proper Unicode support."""
     user_dir = get_user_directory(chat_id)
-    message_file = os.path.join(user_dir, "messages.txt")
+    message_file = os.path.join(user_dir, "messages.json")
+
+    # Load existing messages if the file exists
+    messages = []
+    if os.path.exists(message_file):
+        with open(message_file, "r", encoding="utf-8") as file:
+            messages = json.load(file)
+
+    # Add the new message
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    with open(message_file, "a") as file:
-        file.write(f"[{timestamp}] {text}\n")
+    messages.append({"timestamp": timestamp, "message": text})
+
+    # Save back to the JSON file
+    with open(message_file, "w", encoding="utf-8") as file:
+        json.dump(messages, file, ensure_ascii=False, indent=4)
+
     logger.info(f"Saved text message for User ID: {chat_id}")
+
 
 async def download_file_with_progress(file, filepath, update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Download a file with progress updates."""
@@ -87,7 +101,7 @@ async def save_file(file, user_dir, extension, update: Update, context: ContextT
     await download_file_with_progress(file, temp_filepath, update, context)
 
     # Calculate hash and determine final path
-    file_hash = calculate_file_hash(temp_filepath)
+    file_hash = hashlib.md5(open(temp_filepath, "rb").read()).hexdigest()
     final_filepath = os.path.join(user_dir, f"{file_hash}.{extension}")
 
     if os.path.exists(final_filepath):
@@ -104,6 +118,17 @@ async def save_file(file, user_dir, extension, update: Update, context: ContextT
         f"File saved. User ID: {update.message.chat_id}, File Hash: {file_hash}, Path: {final_filepath}"
     )
     return final_filepath, file_hash, "File saved successfully."
+
+# Telegram Handlers
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle the /start command."""
+    await update.message.reply_text(
+        "Hello! Send me any file or message, and I will save it securely.\n"
+        "I support:\n"
+        "- Text messages\n"
+        "- Photos\n"
+        "- Videos"
+    )
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle incoming messages and files."""
@@ -142,6 +167,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     else:
         await update.message.reply_text("Unsupported content type!")
+        logger.info("unsupported content : " + update.message)
+    
+    # Save the last update offset after processing the message
+    save_offset(update.update_id)
 
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
     """Log errors."""
@@ -150,26 +179,14 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
 # Main Function
 def main():
     """Start the bot."""
-    last_update_offset = load_offset()
 
     application = Application.builder().token(BOT_TOKEN).build()
 
-    # Apply the last processed update offset
-    if last_update_offset:
-        application.builder().update_offset(last_update_offset)
 
     # Handlers
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.ALL, handle_message))
     application.add_error_handler(error_handler)
-
-    # Save the last processed update ID on shutdown
-    def shutdown_callback():
-        last_update = application.get_last_update_id()
-        if last_update:
-            save_offset(last_update)
-
-    application.add_shutdown_callback(shutdown_callback)
 
     # Start polling
     application.run_polling()

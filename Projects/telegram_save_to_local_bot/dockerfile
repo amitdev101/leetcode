@@ -1,0 +1,22 @@
+# Use Alpine Linux as the base image
+FROM python:3.11-alpine
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+
+
+# Create a working directory
+WORKDIR /app
+
+# Copy requirements and install dependencies
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# Copy the bot's code
+COPY . .
+
+# Expose a port (optional, for webhook-based bots)
+# EXPOSE 8443
+
+# Default command to run the bot
+CMD ["python", "save_to_local_bot.py"]

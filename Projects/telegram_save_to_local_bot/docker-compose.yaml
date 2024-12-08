@@ -2,10 +2,13 @@ version: "3.9"
 
 services:
   telegram-bot:
-    image: python:3.11-alpine
+    image: telegram-bot:latest  # Use a pre-built image
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: telegram_bot
     working_dir: /app
-    command: ["sh", "-c", "pip install -r requirements.txt && python save_to_local_bot.py"]
+    command: ["python", "save_to_local_bot.py"]
     volumes:
-      - ./:/app  # Mount the current directory to /app in the container
+      - .:/app
     restart: always

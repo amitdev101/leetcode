@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_ALL_ORIGINS = True # for cors error
+CSP_CONNECT_SRC = ("'self'", "http://127.0.0.1:8000")
+
 
 # Application definition
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'telegram_bot',
+    'chatapi',
     'corsheaders',  # Add this line
     'channels',
 ]
@@ -59,7 +62,7 @@ ROOT_URLCONF = 'my_test_site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'my_test_site' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,6 +74,7 @@ TEMPLATES = [
         },
     },
 ]
+print(TEMPLATES)
 
 WSGI_APPLICATION = 'my_test_site.wsgi.application'
 

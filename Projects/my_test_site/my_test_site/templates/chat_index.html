@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ChatGPT Session</title>
+  <!-- Bootstrap CSS for a responsive layout -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Marked.js for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Highlight.js with a default theme -->
+  <link id="hljs-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+  <!-- ClipboardJS for copy code functionality -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+  
+  <style>
+    body {
+      background-color: #f5f5f7;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Chat container styling */
+    #chat-container {
+      flex-grow: 1;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      background-color: #fff;
+      margin-bottom: 20px;
+    }
+    .chat-message {
+      margin-bottom: 15px;
+    }
+    /* Style for user's message */
+    .chat-message.user-message {
+      background-color: #e7f3ff;
+      color: #0056b3;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .markdown-body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+    /* Code block styling with a dark theme */
+    pre {
+      background: #282c34;
+      color: #abb2bf;
+      padding: 1em;
+      overflow: auto;
+      border-radius: 4px;
+      position: relative;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    }
+    /* Submit button disabled style */
+    button.clicked {
+      background-color: #ccc !important;
+      cursor: not-allowed;
+    }
+    /* Style for the copy button on code blocks */
+    .copy-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: #61dafb;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: #000;
+      cursor: pointer;
+      font-size: 12px;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    .copy-btn:hover {
+      opacity: 1;
+    }
+  </style>
+  
+  <script>
+    // Configure Marked to use Highlight.js for code blocks.
+    marked.setOptions({
+      highlight: function(code, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+          return hljs.highlight(code, { language: lang }).value;
+        }
+        return hljs.highlightAuto(code).value;
+      },
+      langPrefix: 'hljs language-', // Add hljs class to each code block.
+    });
+
+    // Function to add copy buttons to code blocks.
+    function addCopyButtons() {
+      document.querySelectorAll('pre code').forEach((block, index) => {
+        const pre = block.parentElement;
+        if (!pre.querySelector('.copy-btn')) {
+          const codeId = 'code-block-' + index;
+          block.id = codeId;
+          const button = document.createElement('button');
+          button.className = 'copy-btn';
+          button.setAttribute('data-clipboard-target', `#${codeId}`);
+          button.innerText = 'Copy';
+          pre.appendChild(button);
+        }
+      });
+      new ClipboardJS('.copy-btn').on('success', function(e) {
+        e.trigger.innerText = 'Copied!';
+        setTimeout(() => { e.trigger.innerText = 'Copy'; }, 2000);
+        e.clearSelection();
+      });
+    }
+
+    // Function to change the code theme dynamically.
+    function changeTheme(event) {
+      const themeUrl = event.target.value;
+      document.getElementById('hljs-theme').href = themeUrl;
+    }
+
+    // Function to start streaming and rendering the API response.
+    async function startStream(event) {
+      event.preventDefault();
+      
+      // Disable the submit button temporarily.
+      const submitButton = event.target;
+      submitButton.disabled = true;
+      submitButton.classList.add("clicked");
+      setTimeout(() => {
+        submitButton.disabled = false;
+        submitButton.classList.remove("clicked");
+      }, 5000);
+      
+      const form = document.getElementById('streamForm');
+      const chatContainer = document.getElementById('chat-container');
+      const textarea = form.querySelector('textarea[name="user_input"]');
+      const userText = textarea.value.trim();
+
+      // Append the user's message.
+      if (userText !== "") {
+        const userMessageDiv = document.createElement("div");
+        userMessageDiv.className = "chat-message user-message";
+        userMessageDiv.textContent = userText;
+        chatContainer.appendChild(userMessageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+
+      // Create a container for the assistant's response.
+      const messageDiv = document.createElement("div");
+      messageDiv.className = "chat-message";
+      chatContainer.appendChild(messageDiv);
+
+      let fullResponse = "";
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { "X-Requested-With": "XMLHttpRequest" }
+        });
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let done = false;
+        while (!done) {
+          const { value, done: doneReading } = await reader.read();
+          done = doneReading;
+          if (value) {
+            const chunk = decoder.decode(value, { stream: true });
+            fullResponse = chunk;
+            // Parse the markdown (which includes Java code blocks) into HTML.
+            const htmlContent = marked.parse(fullResponse);
+            messageDiv.innerHTML = `<div class="markdown-body">${htmlContent}</div>`;
+            // Apply syntax highlighting on the new content.
+            messageDiv.querySelectorAll('pre code').forEach((block) => {
+              hljs.highlightElement(block);
+            });
+            // Add copy buttons to the code blocks.
+            addCopyButtons();
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+          }
+        }
+      } catch (error) {
+        console.error("Streaming error:", error);
+        const errorMessage = document.createElement("div");
+        errorMessage.textContent = "Error: " + error;
+        messageDiv.appendChild(errorMessage);
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="container-fluid">
+    <h1 class="text-center mb-4">Helper Session</h1>
+    
+    <!-- Theme selector -->
+    <div class="mb-3">
+      <label for="theme-select">Select Code Theme:</label>
+      <select id="theme-select" class="form-control" onchange="changeTheme(event)">
+        <option value="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css">Atom One Dark</option>
+        <option value="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">Default</option>
+        <option value="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/github.min.css">GitHub</option>
+        <option value="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/monokai-sublime.min.css">Monokai Sublime</option>
+        <option value="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/dracula.min.css">Dracula</option>
+      </select>
+    </div>
+    
+    <!-- Chat container to display messages -->
+    <div id="chat-container" class="mb-3"></div>
+
+    <!-- Input form (used by Django) -->
+    <div id="input-container" class="mb-3">
+      <form id="streamForm" method="post" action="">
+        {% csrf_token %}
+        <div class="form-group mt-2">
+          <textarea name="user_input" class="form-control" placeholder="Enter your message..." rows="4"></textarea>
+          <button type="submit" class="btn btn-primary btn-block" onclick="startStream(event)">Submit</button>
+        </div>
+      </form>
+    </div>
+    
+  </div>
+</body>
+</html>

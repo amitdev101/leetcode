@@ -16,7 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from my_test_site import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('myapp/', include('telegram_bot.urls'))
+    path('myapp/', include('telegram_bot.urls')),
+    path('', views.index, name='index'),
+    # All API endpoints from the chatapi app will be prefixed with /api/
+    path('api/', include('chatapi.urls')),
 ]

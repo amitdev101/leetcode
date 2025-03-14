@@ -8,11 +8,14 @@ from django.shortcuts import render
 from .meta_ai_request import cookies,files,headers,params
 
 PRINT_LOGS = True
+USER_INPUT_FILE = open("user_input_meta.log",'a+',1, encoding='utf-8', errors='ignore')
+SEP = '\n' + '-'*30 + '\n' 
 
 def index(request):
     if request.method == "POST":
         user_input = request.POST.get("user_input")
         print("user input " , user_input)
+        USER_INPUT_FILE.writelines(time.ctime() + SEP + str(user_input) + SEP)
         url = "https://graph.meta.ai/graphql?locale=user"
         # headers = {
         #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0",

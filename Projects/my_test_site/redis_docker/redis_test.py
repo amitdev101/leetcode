@@ -72,9 +72,13 @@ def test():
     print(keys)
     # for i,key in enumerate(keys):
     #     print(i, " ",key, ' = ', redis_connection.get(key))
-    value = redis_connection.get('chat_response')
-    print("content = " ,value)
-    json_data = extract_json(value)
+    key = keys[0]
+    value = redis_connection.get(key)
+    print(f"key = {key} -> {value}")
+
+    # value = redis_connection.get('chat_response')
+    # print("content = " ,value)
+    # json_data = extract_json(value)
 
     
 

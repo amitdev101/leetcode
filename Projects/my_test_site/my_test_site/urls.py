@@ -24,4 +24,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     # All API endpoints from the chatapi app will be prefixed with /api/
     path('api/', include('chatapi.urls')),
+    path("formatter/", include("pasteapp.urls")),
 ]

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'YOUR_SECRET_KEY_HERE'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'chatapi',
     'corsheaders',  # Add this line
     'channels',
+    'pasteapp',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +75,7 @@ TEMPLATES = [
         },
     },
 ]
-print(TEMPLATES)
+# print(TEMPLATES)
 
 WSGI_APPLICATION = 'my_test_site.wsgi.application'
 

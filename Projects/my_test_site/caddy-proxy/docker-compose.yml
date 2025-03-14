@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  flask-proxy:
+    build: ./flask-proxy
+    container_name: flask-proxy
+    expose:
+      - "8080"
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy-proxy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - flask-proxy
+    restart: unless-stopped

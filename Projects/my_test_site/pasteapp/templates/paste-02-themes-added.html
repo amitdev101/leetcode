@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Real-Time Code Sync</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- CodeMirror CSS (Default + Additional Themes) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css">
+  <!-- Sublime Theme (default) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/sublime.min.css">
+  <!-- Additional Themes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/monokai.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/dracula.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/eclipse.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/material.min.css">
+  <style>
+    body { background-color: #f8f9fa; }
+    .editor-container { max-width: 900px; margin: 20px auto; }
+    .CodeMirror {
+      border: 1px solid #ced4da;
+      height: 500px;
+      font-size: 14px;
+    }
+    #historyContainer {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Real-Time Code Sync</a>
+    </div>
+  </nav>
+  
+  <div class="container editor-container">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <input type="text" id="senderName" class="form-control" placeholder="Enter your name" required>
+      </div>
+      <div class="col-md-6">
+        <select id="themeSelector" class="form-select">
+          <option value="sublime" selected>Sublime</option>
+          <option value="monokai">Monokai</option>
+          <option value="dracula">Dracula</option>
+          <option value="eclipse">Eclipse</option>
+          <option value="material">Material</option>
+        </select>
+      </div>
+    </div>
+    <textarea id="codeEditor"></textarea>
+    <div class="btn-group my-2">
+      <button id="sendBtn" class="btn btn-primary">Send</button>
+      <button id="copyBtn" class="btn btn-secondary">Copy Editor Content</button>
+    </div>
+    <hr>
+    <h4>Message History</h4>
+    <div id="historyContainer" class="list-group"></div>
+  </div>
+  
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- CodeMirror JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js"></script>
+  <!-- CodeMirror mode for JavaScript (adjust mode if needed) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/javascript/javascript.min.js"></script>
+  
+  <script>
+    // Initialize CodeMirror with default theme "sublime"
+    var editor = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
+      lineNumbers: true,
+      theme: "sublime",
+      mode: "javascript",  // Change mode if needed
+    });
+
+    // Change theme when selected
+    document.getElementById("themeSelector").addEventListener("change", function() {
+      var selectedTheme = this.value;
+      editor.setOption("theme", selectedTheme);
+    });
+
+    // Flag to avoid looping on remote updates
+    let isRemoteUpdate = false;
+    let debounceTimeout = null;
+
+    // Build WebSocket URL dynamically
+    const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+    const socketUrl = `${wsScheme}://${window.location.host}/ws/paste/`;
+    const socket = new WebSocket(socketUrl);
+
+    socket.onopen = function() {
+      console.log("WebSocket connection opened.");
+    };
+
+    socket.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      const sender = data.name || "Unknown";
+      const message = data.message;
+      // Only update if the sender is not the local user
+      if (sender !== document.getElementById("senderName").value.trim() && message !== editor.getValue()) {
+        isRemoteUpdate = true;
+        // Save current cursor position
+        const cursor = editor.getCursor();
+        editor.setValue(message);
+        // Restore the cursor position
+        editor.setCursor(cursor);
+        isRemoteUpdate = false;
+        addHistoryMessage(sender, message);
+      }
+    };
+
+    socket.onerror = function(error) {
+      console.error("WebSocket error:", error);
+    };
+
+    socket.onclose = function(event) {
+      console.log("WebSocket connection closed with code", event.code);
+    };
+
+    // Send button sends the current editor content via WebSocket and logs it to history.
+    document.getElementById("sendBtn").addEventListener("click", function() {
+      const sender = document.getElementById("senderName").value.trim();
+      const message = editor.getValue();
+      if (!sender || !message) return;
+      const payload = { name: sender, message: message };
+      socket.send(JSON.stringify(payload));
+      addHistoryMessage(sender, message);
+    });
+
+    // Copy Editor Content button
+    document.getElementById("copyBtn").addEventListener("click", function() {
+      const message = editor.getValue();
+      navigator.clipboard.writeText(message).then(function() {
+        alert("Editor content copied to clipboard!");
+      }, function(err) {
+        console.error("Error copying text: ", err);
+      });
+    });
+
+    // Listen for changes in the editor and send updates with debounce (optional)
+    editor.on("change", function(instance, changeObj) {
+      if (isRemoteUpdate) return;
+      if (debounceTimeout) clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(function() {
+        const sender = document.getElementById("senderName").value.trim();
+        const message = editor.getValue();
+        if (!sender || !message) return;
+        const payload = { name: sender, message: message };
+        socket.send(JSON.stringify(payload));
+      }, 500);
+    });
+
+    // Add a message to the history panel with a copy button for that message.
+    function addHistoryMessage(sender, message) {
+      const historyContainer = document.getElementById("historyContainer");
+      
+      // Create a new history item using Bootstrap list-group-item classes.
+      const historyItem = document.createElement("div");
+      historyItem.className = "list-group-item";
+      
+      const headerDiv = document.createElement("div");
+      headerDiv.className = "d-flex w-100 justify-content-between align-items-center";
+      
+      const senderElem = document.createElement("h5");
+      senderElem.className = "mb-1";
+      senderElem.textContent = sender;
+      
+      const copyBtn = document.createElement("button");
+      copyBtn.className = "btn btn-sm btn-outline-secondary";
+      copyBtn.textContent = "Copy";
+      copyBtn.addEventListener("click", function() {
+        navigator.clipboard.writeText(message).then(function() {
+          alert("Message copied to clipboard!");
+        }, function(err) {
+          console.error("Error copying message: ", err);
+        });
+      });
+      
+      headerDiv.appendChild(senderElem);
+      headerDiv.appendChild(copyBtn);
+      
+      const pre = document.createElement("pre");
+      pre.className = "mt-2 mb-0";
+      pre.style.whiteSpace = "pre-wrap";
+      pre.textContent = message;
+      
+      historyItem.appendChild(headerDiv);
+      historyItem.appendChild(pre);
+      
+      historyContainer.appendChild(historyItem);
+      historyContainer.scrollTop = historyContainer.scrollHeight;
+    }
+  </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 import json
 import time
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 import redis
 import json5,re
 from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
@@ -138,4 +138,29 @@ def index(request):
         return StreamingHttpResponse(data_stream(), content_type=content_type)
 
     return render(request, "chat_index.html")
+
+def chatpage(request):
+    """
+    Retrieves the full chat page HTML stored under the Redis key 'chatpage'
+    and returns it as an HTTP response.
+    """
+    # if request.method == "POST":
+    #     # Get the submitted chat input and set the Redis key 'chat_input'
+    #     chat_input = request.POST.get("chat_input", "")
+    #     redis_client.set('chat_input', chat_input)
+        # Redirect to avoid resubmission on refresh
+        # return redirect('chat-page-data')
+    # Attempt to retrieve the chat page data from Redis.
+    page_data = redis_client.get('chatpage')
+    
+    if page_data:
+        # Convert the binary data to a string.
+        page_content = page_data
+    else:
+        page_content = "<p>No chat page data found.</p>"
+    
+    # Return the content as an HTTP response with a content type of HTML.
+    # return HttpResponse(page_content, content_type="text/html")
+    # Render the template with the chat page content.
+    return render(request, 'chatpage.html', {'page_content': page_content})
 

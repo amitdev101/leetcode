@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Text Formatter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link 
+    rel="stylesheet" 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Optional: Ensure a comfortable height for the textarea */
+    textarea.form-control {
+      min-height: 60vh; /* At least 60% of viewport height */
+      max-height: 90vh; /* Prevents excessive growth */
+      overflow-y: auto; /* Enables vertical scrolling */
+      resize: vertical; /* Allows manual resizing */
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+      <!-- The column takes full width on small screens and 10/12 on medium and up -->
+      <div class="col-12 col-md-10">
+        <h2 class="mb-4 text-center">Text Formatter</h2>
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <textarea 
+              name="content" 
+              class="form-control" 
+              rows="6" 
+              placeholder="Enter content...">{{ content }}</textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Format text</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

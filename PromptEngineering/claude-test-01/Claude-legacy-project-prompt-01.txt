@@ -1,0 +1,146 @@
+You are analyzing a legacy Java codebase in a Git repository.
+
+This repository uses a CUSTOM INTERNAL FRAMEWORK.
+Do NOT assume Spring Boot, Spring MVC, Spring DI, or standard enterprise Java architecture unless explicitly present in the code.
+
+Your task is to reverse-engineer the repository and generate AI context files so future code changes match the existing framework safely.
+
+Rules:
+- Treat the repository and Git history as the source of truth
+- Prefer repeated patterns over isolated examples
+- Do not rename internal framework concepts into generic industry terms
+- If patterns conflict, report the conflict explicitly
+- Distinguish between current standards, legacy patterns, enforced rules, and uncertain inferences
+
+Analyze the repository and Git history to determine:
+
+1. System overview
+- root modules
+- framework core modules
+- feature modules
+- infrastructure modules
+- startup/bootstrap flow
+- config locations
+- build/lint/test tooling
+
+2. Framework core concepts
+- base classes
+- interfaces
+- custom annotations
+- context objects
+- handlers/processors/executors
+- registries/factories/descriptors
+- lifecycle hooks
+- dependency wiring
+- extension points
+
+3. Execution lifecycle
+- startup
+- module initialization
+- component registration/discovery
+- request/task/job/event flow
+- validation
+- business execution
+- exception handling
+- logging/tracing
+- shutdown if present
+
+4. Architecture boundaries
+- allowed dependency directions
+- suspicious or forbidden dependency directions
+- framework internals vs extension points
+- where business logic lives
+- where infrastructure logic lives
+- stable vs fragile abstractions
+
+5. Static code rules
+Extract only repository-supported rules from:
+- checkstyle
+- pmd
+- spotbugs
+- editorconfig
+- build plugins
+- formatting/import/naming/test conventions
+
+6. Extension patterns
+How developers typically add:
+- new framework components
+- handlers/processors/executors
+- modules
+- commands/tasks/jobs
+- endpoints if applicable
+- tests
+
+7. Legacy inconsistencies
+Identify:
+- competing patterns
+- deprecated styles still in use
+- partial migrations
+- old modules using older conventions
+- areas where the framework model changed over time
+
+8. Hotspots and risk areas
+Using Git history and code structure, identify:
+- high-churn files/modules
+- fragile integration points
+- bottlenecks
+- heavily depended-on modules
+- areas where AI-generated changes should be extra conservative
+
+Generate these files:
+
+/ai-context/
+- 00-system-overview.md
+- 01-framework-core-concepts.md
+- 02-execution-lifecycle.md
+- 03-architecture-boundaries.md
+- 04-static-code-rules.md
+- 05-extension-patterns.md
+- 06-testing-patterns.md
+- 07-legacy-inconsistencies.md
+- 08-forbidden-assumptions.md
+- 09-good-examples.md
+- 10-architecture-map.md
+- 11-evolution-timeline.md
+- 12-hotspots-and-risk-areas.md
+- 13-glossary.md
+
+Also generate:
+- CLAUDE.md
+
+Requirements for all generated files:
+- concise
+- practical
+- bullet-based
+- little or no repetition
+- exact framework vocabulary
+- include short code snippets only where useful
+- mark uncertainty clearly
+
+Classify every rule or conclusion as one of:
+- Enforced Rule
+- Current Observed Convention
+- Legacy Pattern
+- Risk Signal
+- Uncertain Inference
+
+CLAUDE.md must include:
+- warning that this is a custom internal framework
+- instruction not to assume Spring or standard enterprise Java
+- highest-priority rules
+- source-of-truth ai-context files
+- instruction to inspect nearby code before generating changes
+- instruction to summarize applicable rules before coding
+- instruction to distinguish current standards from legacy patterns
+- forbidden assumptions
+- caution for hotspot/risk areas
+
+Final output should include:
+1. repository overview
+2. architecture summary
+3. generated ai-context files
+4. generated CLAUDE.md
+5. a short list of ambiguities for human maintainers to verify
+
+Do not output generic Java best practices unless clearly supported by repository evidence.
+Prefer repository truth over textbook elegance.

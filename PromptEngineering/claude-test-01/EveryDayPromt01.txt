@@ -1,0 +1,19 @@
+Read CLAUDE.md and the relevant files in /ai-context first.
+
+This repository uses a custom internal Java framework.
+Do not assume Spring Boot or standard enterprise Java patterns.
+
+Task:
+[describe task]
+
+Before writing code:
+1. identify the relevant framework abstractions
+2. summarize the rules and conventions you will follow
+3. note any legacy patterns nearby
+4. note whether this area is a hotspot or risk area
+5. list any uncertainty
+6. Prefer mimicking neighboring files over applying global assumptions.
+
+Then generate the smallest safe change that matches the local repository style.
+Reuse existing patterns before inventing new ones.
+Do not introduce outside architectural assumptions.

@@ -1,0 +1,283 @@
+You are working in a Git repository containing a legacy Java codebase built on a CUSTOM INTERNAL FRAMEWORK.
+
+This repository may already contain analysis and AI context files.
+
+Your task is to maintain and extend the repository's AI context while avoiding hallucinated architecture.
+
+IMPORTANT RULES
+
+1. Do NOT assume Spring Boot, Spring MVC, Spring DI, or standard enterprise Java architecture unless explicitly present in the repository.
+2. Treat repository evidence as the primary source of truth.
+3. Prefer repeated repository patterns over isolated examples.
+4. When evidence is insufficient, mark conclusions as "Uncertain Inference".
+5. Never invent architectural structure to make documentation appear complete.
+
+--------------------------------------------------
+STEP 0 — READ EXISTING CONTEXT
+--------------------------------------------------
+
+Before doing any analysis, check for and read the following if they exist:
+
+- dev-info.md
+- CLAUDE.md
+- /ai-analysis/*
+- /ai-context/*
+
+Interpret them as follows:
+
+dev-info.md  
+Human-maintained guidance about architecture, preferred patterns, traps, and team rules.
+
+ai-analysis  
+Evidence and architectural analysis generated previously.
+
+ai-context  
+Operational documentation used by AI assistants for code generation.
+
+CLAUDE.md  
+Instructions for how AI assistants should behave in this repository.
+
+If these files already exist:
+- reuse their information
+- extend them only if necessary
+- do not regenerate them entirely
+- preserve manual developer edits
+
+--------------------------------------------------
+STEP 1 — DETECT MISSING KNOWLEDGE
+--------------------------------------------------
+
+Determine which artifacts are missing.
+
+Decision logic:
+
+If `/ai-analysis` is missing  
+→ perform evidence gathering and create analysis files.
+
+If `/ai-analysis` exists but architecture inference is missing  
+→ derive architectural conclusions.
+
+If `/ai-context` is missing  
+→ generate AI context documentation.
+
+If `CLAUDE.md` is missing  
+→ generate the AI operating manual.
+
+If everything exists  
+→ only update files if repository structure suggests they are outdated.
+
+Always prefer incremental updates over regeneration.
+
+--------------------------------------------------
+STEP 2 — EVIDENCE GATHERING (IF NEEDED)
+--------------------------------------------------
+
+Collect repository evidence without drawing conclusions.
+
+Gather:
+
+- module structure
+- major package roots
+- framework core classes and interfaces
+- annotations
+- handlers/processors/executors
+- registries/factories/descriptors
+- configuration systems
+- build tools
+- lint rules
+- test frameworks
+- git history signals
+- frequently modified modules
+- widely depended-on classes
+
+Store results in:
+
+/ai-analysis/
+
+inventory-modules.md  
+inventory-packages.md  
+inventory-core-classes.md  
+inventory-config-and-rules.md  
+inventory-framework-indicators.md  
+git-signals.md  
+
+Do not infer architecture in this step.
+
+--------------------------------------------------
+STEP 3 — ARCHITECTURE & RULE EXTRACTION (IF NEEDED)
+--------------------------------------------------
+
+Using repository evidence and dev-info.md guidance, infer:
+
+- framework core concepts
+- execution lifecycle
+- dependency boundaries
+- extension mechanisms
+- static code rules
+- legacy vs current conventions
+- high-risk areas
+
+Every architectural conclusion MUST include:
+
+- Classification
+- Evidence Paths
+- Confidence Level
+
+Classification must be one of:
+
+- Enforced Rule
+- Current Observed Convention
+- Legacy Pattern
+- Risk Signal
+- Developer Rule
+- Uncertain Inference
+
+Evidence Paths must reference:
+
+- source files
+- modules
+- configuration files
+- git patterns
+- dev-info.md sections (if applicable)
+
+Confidence Level must be:
+
+- High
+- Medium
+- Low
+
+Confidence guidance:
+
+High  
+Strong evidence across multiple modules or enforced by tooling.
+
+Medium  
+Repeated evidence or supported by dev-info.md but not universal.
+
+Low  
+Limited evidence or partial inference.
+
+Store results in:
+
+/ai-analysis/
+
+architecture-inference.md  
+execution-model.md  
+dependency-boundaries.md  
+extension-patterns.md  
+legacy-patterns.md  
+static-rules.md  
+risk-areas.md  
+
+--------------------------------------------------
+STEP 4 — GENERATE AI CONTEXT (IF NEEDED)
+--------------------------------------------------
+
+Convert architectural analysis into concise operational documentation.
+
+Create:
+
+/ai-context/
+
+00-system-overview.md  
+01-framework-core-concepts.md  
+02-execution-lifecycle.md  
+03-architecture-boundaries.md  
+04-static-code-rules.md  
+05-extension-patterns.md  
+06-testing-patterns.md  
+07-legacy-inconsistencies.md  
+08-forbidden-assumptions.md  
+09-good-examples.md  
+10-architecture-map.md  
+11-hotspots-and-risk-areas.md  
+12-glossary.md  
+
+Requirements:
+
+- concise
+- bullet oriented
+- minimal narrative text
+- avoid duplication
+- preserve framework vocabulary
+- include short code examples only where useful
+
+Do not introduce rules not supported by analysis or dev-info.md.
+
+--------------------------------------------------
+STEP 5 — GENERATE CLAUDE.md (IF NEEDED)
+--------------------------------------------------
+
+If CLAUDE.md does not exist, create it.
+
+This file defines how AI assistants should work safely in the repository.
+
+It must include:
+
+Repository identity
+
+Warning that this project uses a custom internal Java framework
+
+Instruction not to assume Spring Boot or standard enterprise Java patterns
+
+Reference to ai-context files as the source of truth
+
+Instruction to inspect neighboring code before generating changes
+
+Instruction to summarize applicable conventions before coding
+
+Guidance to distinguish current patterns from legacy patterns
+
+List of forbidden assumptions
+
+Guidance for working cautiously in hotspot/risk areas
+
+Section: Safe default behavior for AI-generated code
+
+Rules for that section:
+
+- mimic neighboring files first
+- prefer current observed conventions
+- avoid architectural refactoring unless explicitly requested
+- introduce minimal safe changes
+- reuse existing abstractions before creating new ones
+
+--------------------------------------------------
+STEP 6 — CONFLICT HANDLING
+--------------------------------------------------
+
+If conflicts appear between:
+
+- repository evidence
+- dev-info.md guidance
+- previous ai-analysis conclusions
+
+Do NOT silently resolve them.
+
+Instead:
+
+- report the conflict
+- classify the result as "Uncertain Inference" or "Developer Rule"
+- lower confidence level accordingly.
+
+--------------------------------------------------
+STEP 7 — IDEMPOTENT BEHAVIOR
+--------------------------------------------------
+
+This prompt may be executed repeatedly.
+
+When run again:
+
+- read existing files first
+- do not duplicate work
+- extend only missing information
+- preserve manual edits
+- update analysis only when repository changes require it
+
+--------------------------------------------------
+FINAL RULE
+--------------------------------------------------
+
+Prefer repository evidence and developer guidance over assumptions.
+
+When uncertain, explicitly mark uncertainty instead of completing missing structure.

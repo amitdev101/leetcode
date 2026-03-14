@@ -1,0 +1,174 @@
+You are working in a Git repository containing a legacy Java codebase that uses a CUSTOM INTERNAL FRAMEWORK.
+
+This repository may already contain analysis and AI context files.
+
+IMPORTANT:
+Do NOT assume Spring Boot or standard enterprise Java architecture unless explicitly present in the code.
+
+Your task is to maintain and extend the repository's AI context.
+
+--------------------------------------------------
+
+STEP 0 — Detect Existing Context
+
+Check whether these directories exist:
+
+/ai-analysis/
+/ai-context/
+
+If files exist inside them, read them first and treat them as the current state of knowledge.
+
+Do not regenerate files that already exist unless they are clearly incomplete or inconsistent.
+
+If information already exists, reuse it and extend it.
+
+--------------------------------------------------
+
+STEP 1 — Determine Missing Phases
+
+Use this decision logic:
+
+If `/ai-analysis` does not exist  
+→ perform evidence gathering and create analysis files.
+
+If `/ai-analysis` exists but `/ai-context` does not  
+→ generate AI context files from the analysis.
+
+If `/ai-context` exists but `CLAUDE.md` does not  
+→ generate CLAUDE.md.
+
+If all files exist  
+→ only validate and update them if the repository structure suggests they are outdated.
+
+Never recreate the entire structure unnecessarily.
+
+--------------------------------------------------
+
+STEP 2 — Evidence Gathering (if needed)
+
+If `/ai-analysis` is missing or incomplete:
+
+Collect repository evidence:
+
+- modules
+- package roots
+- framework core classes
+- annotations
+- handlers/processors/executors
+- registries
+- configuration systems
+- build tools
+- lint rules
+- test frameworks
+- git history signals
+- frequently changed modules
+- highly depended-on classes
+
+Store results in:
+
+/ai-analysis/
+inventory-modules.md
+inventory-packages.md
+inventory-core-classes.md
+inventory-config-and-rules.md
+inventory-framework-indicators.md
+git-signals.md
+
+Do not infer architecture in this step.
+
+--------------------------------------------------
+
+STEP 3 — Architecture Extraction (if needed)
+
+Using the evidence in `/ai-analysis`, infer:
+
+- framework core concepts
+- execution lifecycle
+- dependency boundaries
+- extension patterns
+- static code rules
+- legacy vs current conventions
+- risk areas
+
+Classify conclusions as:
+
+- Enforced Rule
+- Observed Convention
+- Legacy Pattern
+- Risk Signal
+- Uncertain Inference
+
+Store results in `/ai-analysis`:
+
+architecture-inference.md
+execution-model.md
+dependency-boundaries.md
+extension-patterns.md
+legacy-patterns.md
+static-rules.md
+risk-areas.md
+
+--------------------------------------------------
+
+STEP 4 — Generate AI Context (if needed)
+
+If `/ai-context` is missing or incomplete, generate:
+
+/ai-context/
+00-system-overview.md
+01-framework-core-concepts.md
+02-execution-lifecycle.md
+03-architecture-boundaries.md
+04-static-code-rules.md
+05-extension-patterns.md
+06-testing-patterns.md
+07-legacy-inconsistencies.md
+08-forbidden-assumptions.md
+09-good-examples.md
+10-architecture-map.md
+11-hotspots-and-risk-areas.md
+12-glossary.md
+
+These files must be concise and operational.
+
+Use bullet points and minimal explanations.
+
+--------------------------------------------------
+
+STEP 5 — Generate CLAUDE.md (if needed)
+
+If `CLAUDE.md` is missing, generate it.
+
+This file must instruct future AI assistants how to safely modify the repository.
+
+It must include:
+
+- repository identity
+- warning about custom framework
+- instruction not to assume Spring Boot
+- reference to ai-context files
+- rules for generating new code
+- rule to inspect neighboring files first
+- rule to summarize applicable conventions before coding
+- forbidden assumptions
+- guidance for working in risk areas
+
+--------------------------------------------------
+
+STEP 6 — Idempotent Behavior
+
+When this prompt is run again:
+
+- read existing files first
+- do not duplicate work
+- update only what is missing or outdated
+- preserve manual edits made by developers
+
+Prefer incremental updates over regeneration.
+
+--------------------------------------------------
+
+FINAL RULE
+
+Prefer repository evidence over assumptions.
+If evidence is insufficient, mark conclusions as "Uncertain Inference".

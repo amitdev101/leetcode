@@ -1,0 +1,106 @@
+You are modifying a repository that uses a custom internal Java framework.
+
+Before generating code, you must align with the repository’s architecture and conventions.
+
+---
+
+## STEP 1 — LOAD CONTEXT
+
+Read these sources first if they exist:
+
+1. framework-mental-model.md
+2. dev-info.md
+3. CLAUDE.md
+4. relevant files in /ai-context
+5. neighboring source files related to the task
+
+Use these sources to understand the framework’s execution model and extension patterns.
+
+Do NOT assume Spring Boot or standard enterprise Java architecture unless explicitly present.
+
+---
+
+## STEP 2 — IDENTIFY RELEVANT FRAMEWORK CONCEPTS
+
+Determine which framework abstractions are involved in this task.
+
+Examples may include:
+
+* Handler
+* Processor
+* ModuleDefinition
+* Context objects
+* Execution pipelines
+* Registration mechanisms
+
+Summarize how the task fits into the framework lifecycle.
+
+---
+
+## STEP 3 — DETERMINE APPLICABLE RULES
+
+List the repository conventions that apply to this change.
+
+Include:
+
+* architecture boundaries
+* extension patterns
+* static code rules
+* testing conventions
+* developer guidance from dev-info.md
+
+If multiple patterns exist, apply precedence rules:
+
+* local enforced rules beat global conventions
+* neighboring active code beats distant examples
+* repeated current patterns beat isolated legacy code
+* developer guidance beats weak inference
+
+---
+
+## STEP 4 — CHECK FOR RISK AREAS
+
+Determine whether the task touches:
+
+* framework core modules
+* registration mechanisms
+* execution pipelines
+* high-churn modules
+* fragile integration points
+
+If so, state the risk and proceed conservatively.
+
+---
+
+## STEP 5 — STATE UNCERTAINTY
+
+If the repository contains conflicting patterns or incomplete evidence:
+
+* identify the uncertainty
+* explain possible interpretations
+* choose the safest approach consistent with nearby code.
+
+Do not silently normalize architectural inconsistencies.
+
+---
+
+## STEP 6 — IMPLEMENT CHANGE
+
+Generate the code change following these principles:
+
+* mimic nearby files first
+* reuse existing abstractions
+* preserve framework lifecycle behavior
+* introduce minimal safe modifications
+* avoid architectural refactoring unless explicitly requested
+
+---
+
+## STEP 7 — VERIFY CONSISTENCY
+
+After generating the code, confirm that it:
+
+* matches the repository’s conventions
+* respects architecture boundaries
+* does not introduce external framework assumptions
+* integrates correctly with existing framework mechanisms

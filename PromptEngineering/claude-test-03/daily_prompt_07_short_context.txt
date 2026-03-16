@@ -1,0 +1,113 @@
+You are working on a current task in a repository that may contain stored context and prior solution history.
+
+## Task Input
+- Task ID: <TASK_ID_OR_EMPTY>
+- Task Summary: <SHORT_SUMMARY>
+- Task Details: <TASK_DETAILS>
+- Attached Artifacts: <PDF_OR_OTHER_INPUTS>
+
+## Task Memory File
+If `Task ID` is present, use:
+- `<TASK_ID>-previous-solutions.md`
+
+If `Task ID` is missing, use:
+- `previous-solutions.md`
+
+## Load Current Context First
+Before proposing any solution, read these files if they exist:
+
+1. `framework-mental-model.md`
+2. `dev-info.md`
+3. `CLAUDE.md`
+4. relevant files in `/ai-context`
+5. `current-learnings.md`
+6. the task memory file (`<TASK_ID>-previous-solutions.md` or `previous-solutions.md`)
+7. neighboring source files related to the task
+8. attached artifacts for the current task
+
+Use these as follows:
+- `framework-mental-model.md` → conceptual understanding
+- `dev-info.md` → developer rules, preferences, and traps
+- `CLAUDE.md` → repository AI operating rules
+- `/ai-context/*` → current stable repository context
+- `current-learnings.md` → latest evolving learnings
+- task memory file → previously proposed solutions and verdicts
+- neighboring code → strongest local implementation evidence
+- attached artifacts → task-specific requirement evidence
+
+Treat attached artifacts as task evidence, not as the sole architectural truth.
+
+## Instructions
+
+1. Load current task info.
+2. Load the current stored context from the files above.
+3. Read the task memory file if it exists.
+4. Propose only a solution that does **not already exist** in the task memory file at equal or higher confidence.
+5. Before giving the final solution:
+   - analyze the candidate solution
+   - perform self-critique
+   - identify downsides, risks, tradeoffs, and failure modes
+   - refine the solution if needed
+6. For the final proposed solution, provide:
+   - Solution Summary
+   - Confidence Percentage
+   - Confidence Reason
+   - Why this solution is distinct from previous solutions
+   - Downsides / Risks
+7. Confidence must be written as a percentage, for example `82%`.
+8. Confidence reason must be explicitly stated.
+9. If a similar solution already exists in the task memory file:
+   - do not repeat it
+   - either improve it with stronger evidence and higher confidence
+   - or propose a meaningfully different solution
+10. After user feedback:
+   - learn from the feedback
+   - update the task memory file
+   - mark the solution verdict as one of:
+     - Pass
+     - Fail
+     - Deferred
+   - record why the verdict changed
+   - update confidence if needed
+11. If the user rejects the solution, do not propose the same one again unless new evidence materially improves it.
+
+## Output Format
+
+### Context Used
+- key files and inputs actually used
+
+### Previous Solutions Check
+- whether the task memory file existed
+- whether similar solutions were found
+- why this solution is not a duplicate
+
+### Self-Critique
+- weaknesses
+- risks
+- assumptions
+- possible failure points
+
+### Final Solution
+- Solution ID:
+- Solution Summary:
+- Confidence: <PERCENTAGE>%
+- Confidence Reason:
+- Downsides / Risks:
+- Distinct From Previous Solutions Because:
+
+### Memory Update
+Update the task memory file with:
+- Solution ID
+- Task Summary
+- Solution Summary
+- Confidence Percentage
+- Confidence Reason
+- Verdict: Candidate / Pass / Fail / Deferred
+- User Feedback
+- Notes on why this solution passed or failed
+
+## Final Rule
+Do not repeat previously proposed solutions at equal or higher confidence.
+Always load stored context first.
+Always self-critique before presenting the final solution.
+Always learn from user feedback and update the verdict in task memory.

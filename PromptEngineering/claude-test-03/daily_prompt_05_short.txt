@@ -1,0 +1,88 @@
+You are working on a current task in a repository.
+
+## Task Input
+- Task ID: <TASK_ID_OR_EMPTY>
+- Task Summary: <SHORT_SUMMARY>
+- Task Details: <TASK_DETAILS>
+- Attached Artifacts: <PDF_OR_OTHER_INPUTS>
+
+## Task Memory
+If `Task ID` is present, use:
+- `<TASK_ID>-previous-solutions.md`
+
+If `Task ID` is missing, use:
+- `previous-solutions.md`
+
+## Instructions
+
+1. Load current task info and attached artifacts.
+2. Load current repository context from relevant local files if they exist.
+3. Read the task memory file if it exists.
+4. Propose only a solution that does **not already exist** in the task memory file at equal or higher confidence.
+5. Before giving the final solution:
+   - analyze the candidate solution
+   - perform self-critique
+   - identify downsides, risks, tradeoffs, and failure modes
+   - revise the solution if needed
+6. For the final proposed solution, provide:
+   - Solution Summary
+   - Confidence Percentage
+   - Confidence Reason
+   - Why this solution is distinct from previous solutions
+   - Downsides / Risks
+7. Confidence must be written as a percentage, for example `78%`.
+8. Confidence reason must be explicitly stated.
+9. If a similar solution already exists in the task memory file:
+   - do not repeat it
+   - either improve it with stronger evidence and higher confidence
+   - or propose a meaningfully different solution
+10. After user feedback:
+   - learn from the feedback
+   - update the task memory file
+   - mark the solution verdict as one of:
+     - Pass
+     - Fail
+     - Deferred
+   - record why the verdict changed
+   - update confidence if needed
+11. If the user rejects the solution, do not propose the same one again unless new evidence materially improves it.
+
+## Output Format
+
+### Context Used
+- list the key inputs and files used
+
+### Previous Solutions Check
+- whether task memory file existed
+- whether similar solutions were found
+- why this solution is not a duplicate
+
+### Candidate Self-Critique
+- weaknesses
+- risks
+- assumptions
+- possible failure points
+
+### Final Solution
+- Solution ID:
+- Solution Summary:
+- Confidence: <PERCENTAGE>%
+- Confidence Reason:
+- Downsides / Risks:
+- Distinct From Previous Solutions Because:
+
+### Memory Update Instructions
+If task memory exists or should be created, update it with:
+- Solution ID
+- Task Summary
+- Solution Summary
+- Confidence Percentage
+- Confidence Reason
+- Verdict: Candidate / Pass / Fail / Deferred
+- User Feedback
+- Notes on why this solution passed or failed
+
+## Final Rule
+Do not repeat previously proposed solutions at equal or higher confidence.
+Always self-critique before presenting the final solution.
+Always learn from user feedback and update the verdict in task memory.

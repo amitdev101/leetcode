@@ -1,0 +1,272 @@
+You are modifying a repository that uses a custom internal Java framework.
+
+Do not assume Spring Boot or standard enterprise Java architecture unless explicitly present in the code.
+
+Your job is to make the requested change while preserving repository conventions, avoiding duplicate solutions, and updating repository memory when durable new knowledge is discovered.
+
+Use these memory layers:
+
+- `previous-solutions.md` = decision memory
+- `current-learnings.md` = evolving repository intelligence
+- `/ai-context/*` = stable operational guidance
+- `CLAUDE.md` = AI operating rules
+
+Never invent architecture to make the answer appear complete.
+
+---
+
+## STEP 1 — Load context
+
+Read these first if they exist:
+
+1. `framework-mental-model.md`
+2. `dev-info.md`
+3. `CLAUDE.md`
+4. relevant files in `/ai-context`
+5. `previous-solutions.md`
+6. `current-learnings.md`
+7. neighboring source files related to the task
+
+Use neighboring active code as the strongest local implementation evidence.
+
+---
+
+## STEP 2 — Identify framework concepts
+
+Identify the framework abstractions involved in this task.
+
+Examples:
+- Handler
+- Processor
+- ModuleDefinition
+- Context object
+- Execution pipeline
+- Registration mechanism
+
+Briefly explain how the task fits into the framework lifecycle.
+
+---
+
+## STEP 3 — Determine applicable rules
+
+List the rules and conventions that apply to this task.
+
+Include:
+- architecture boundaries
+- extension patterns
+- static code rules
+- testing conventions
+- developer guidance from `dev-info.md`
+- relevant items from `current-learnings.md`
+
+Apply these precedence rules:
+
+1. local enforced rules beat global conventions
+2. neighboring active code beats distant examples
+3. repeated current patterns beat isolated legacy code
+4. developer guidance beats weak inference
+5. uncertainty must be stated, not hidden
+
+---
+
+## STEP 4 — Check previous solutions
+
+Read `previous-solutions.md` and check whether a similar solution has already been proposed.
+
+Before proposing any solution:
+- compare against earlier solution entries
+- inspect their status: accepted / rejected / deferred
+- inspect their confidence level and confidence score
+
+Rules:
+- do not propose the same solution again if it already exists with equal or higher confidence
+- only revive a prior solution if new evidence materially increases confidence
+- if revisiting a rejected solution, explain what new evidence changes the conclusion
+
+---
+
+## STEP 5 — Check for risk areas
+
+Determine whether the task touches:
+- framework core modules
+- registration mechanisms
+- execution pipelines
+- high-churn modules
+- fragile integration points
+
+If risk exists:
+- state the risk
+- prefer the smallest safe change
+- avoid architectural expansion
+
+---
+
+## STEP 6 — Generate distinct candidate solutions
+
+Only propose candidate solutions that are genuinely distinct from previously recorded solutions at equal or higher confidence.
+
+For each candidate include:
+
+- Solution ID
+- Description
+- Classification
+- Evidence Paths
+- Confidence Level
+- Confidence Score (0.0–1.0)
+- Confidence Basis
+- Why this is distinct from earlier solutions
+
+Allowed classifications:
+- Enforced Rule
+- Current Observed Convention
+- Legacy Pattern
+- Risk Signal
+- Developer Rule
+- Uncertain Inference
+
+Confidence guidance:
+- High = 0.80–1.00
+- Medium = 0.50–0.79
+- Low = 0.00–0.49
+
+---
+
+## STEP 7 — Handle uncertainty
+
+If conflicting patterns exist:
+- list the competing approaches
+- rank them by confidence score
+- explain the evidence for each
+- choose the safest option consistent with local code and repository guidance
+
+Do not silently normalize conflicting architecture.
+
+---
+
+## STEP 8 — Implement the best solution
+
+Implement the highest-confidence solution that has not already been proposed earlier with equal or greater confidence.
+
+Implementation rules:
+- mimic neighboring files first
+- reuse existing abstractions
+- preserve framework lifecycle behavior
+- introduce minimal safe modifications
+- avoid architectural refactoring unless explicitly requested
+
+---
+
+## STEP 9 — Verify consistency
+
+After generating code, verify that the change:
+- matches repository conventions
+- respects architecture boundaries
+- integrates correctly with framework lifecycle
+- introduces no external framework assumptions
+
+---
+
+## STEP 10 — Update `previous-solutions.md`
+
+Record all load-bearing candidate and final solutions.
+
+For each solution include:
+- Solution ID
+- Task
+- Description
+- Status: candidate / rejected / accepted / deferred
+- Classification
+- Evidence Paths
+- Confidence Level
+- Confidence Score
+- Confidence Basis
+- Reasoning
+- Confidence Change:
+  - previous score
+  - new score
+  - reason for change
+
+Rules:
+- never modify confidence silently
+- explain every confidence change
+- link superseded solutions to earlier solution IDs
+
+---
+
+## STEP 11 — Update `current-learnings.md`
+
+If the task reveals durable insights, update or append a learning.
+
+For each learning include:
+- Learning ID
+- Context
+- Observation
+- Classification
+- Evidence Paths
+- Confidence Level
+- Confidence Score
+- Confidence Basis
+- Stability: stable / provisional / disputed
+- Relevance for future tasks
+- Confidence Change:
+  - previous score
+  - new score
+  - reason
+
+Rules:
+- update existing learnings instead of duplicating
+- only record meaningful discoveries
+
+---
+
+## STEP 12 — Update `/ai-context/*` if needed
+
+If a learning is durable, reusable, and strongly supported, propagate it into the appropriate `/ai-context` file.
+
+Possible targets:
+- `01-framework-core-concepts.md`
+- `02-execution-lifecycle.md`
+- `03-architecture-boundaries.md`
+- `04-static-code-rules.md`
+- `05-extension-patterns.md`
+- `06-testing-patterns.md`
+- `07-legacy-inconsistencies.md`
+- `08-forbidden-assumptions.md`
+- `09-good-examples.md`
+- `10-architecture-map.md`
+- `11-hotspots-and-risk-areas.md`
+- `12-glossary.md`
+
+Rules:
+- do not duplicate existing guidance
+- revise existing guidance if new evidence strengthens or weakens it
+- keep wording concise and operational
+- do not promote weak observations into `/ai-context`
+
+For each `/ai-context` update, record:
+- file changed
+- what changed
+- evidence paths
+- confidence level
+
+---
+
+## STEP 13 — Update `CLAUDE.md` if needed
+
+Update `CLAUDE.md` only if the task changes how AI should behave in the repository.
+
+Examples:
+- new forbidden assumptions
+- new risk zones
+- new precedence rules
+- new required context sources
+
+Do not update `CLAUDE.md` for ordinary implementation details.
+
+---
+
+## FINAL RULE
+
+Do not repeat previously proposed solutions unless new evidence materially increases confidence.
+
+Confidence is persistent repository state and must be explicitly maintained across runs.

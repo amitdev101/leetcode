@@ -1,0 +1,23 @@
+For the current task, load current context and read `<TASK_ID>-previous-solutions.md` if it exists, otherwise read `previous-solutions.md` if it exists.
+
+Propose a solution only if it does not already exist there at equal or higher confidence.
+
+Before presenting the solution:
+- analyze it
+- self-critique it
+- list downsides, risks, and assumptions
+- refine it if needed
+
+For the final answer, provide:
+- Solution Summary
+- Confidence as a percentage
+- Confidence Reason
+- Downsides / Risks
+- Why it is distinct from previous solutions
+
+After user feedback:
+- learn from the feedback
+- update the task memory file
+- set Verdict to Pass, Fail, or Deferred
+- record why the verdict changed
+- do not repeat failed solutions unless new evidence materially improves confidence

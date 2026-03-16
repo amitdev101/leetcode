@@ -1,0 +1,32 @@
+For the current task, first load stored context from:
+- framework-mental-model.md
+- dev-info.md
+- CLAUDE.md
+- relevant /ai-context files
+- current-learnings.md
+- <TASK_ID>-previous-solutions.md if Task ID exists, otherwise previous-solutions.md
+- neighboring code
+- attached task artifacts
+
+Then propose a solution only if it does not already exist in the task memory at equal or higher confidence.
+
+Before presenting the solution:
+- analyze it
+- self-critique it
+- list downsides, risks, and assumptions
+- refine it if needed
+
+Return:
+- Context Used
+- Previous Solutions Check
+- Self-Critique
+- Final Solution
+- Confidence as a percentage
+- Confidence Reason
+- Why it is distinct from previous solutions
+
+After user feedback:
+- update the task memory file
+- set verdict to Pass, Fail, or Deferred
+- record why the verdict changed
+- do not repeat failed solutions unless new evidence materially improves confidence

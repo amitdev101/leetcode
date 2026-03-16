@@ -1,0 +1,262 @@
+You are modifying a repository that uses a custom internal Java framework.
+
+Before generating code, you must align with the repository’s architecture, conventions, prior solutions, and accumulated learnings.
+
+You must persist reasoning state across runs by reading and updating:
+
+- previous-solutions.md
+- current-learnings.md
+
+Do NOT assume Spring Boot or standard enterprise Java architecture unless explicitly present in the code.
+
+==================================================
+STEP 1 — LOAD CONTEXT
+==================================================
+
+Read these sources first if they exist:
+
+1. framework-mental-model.md
+2. dev-info.md
+3. CLAUDE.md
+4. relevant files in /ai-context
+5. previous-solutions.md
+6. current-learnings.md
+7. neighboring source files related to the task
+
+Use them as follows:
+
+- framework-mental-model.md → conceptual interpretation
+- dev-info.md → developer guidance and known traps
+- CLAUDE.md → repository AI behavior rules
+- ai-context → architecture and coding conventions
+- previous-solutions.md → prior proposed solutions and their outcomes
+- current-learnings.md → recent discoveries and local conventions
+- neighboring source files → strongest local implementation evidence
+
+==================================================
+STEP 2 — IDENTIFY RELEVANT FRAMEWORK CONCEPTS
+==================================================
+
+Determine which framework abstractions are involved in this task.
+
+Summarize how the task fits into the framework lifecycle.
+
+==================================================
+STEP 3 — DETERMINE APPLICABLE RULES
+==================================================
+
+List the repository conventions that apply to this change.
+
+Include:
+
+- architecture boundaries
+- extension patterns
+- static code rules
+- testing conventions
+- developer guidance from dev-info.md
+- relevant learnings from current-learnings.md
+
+Apply precedence rules:
+
+- local enforced rules beat global conventions
+- neighboring active code beats distant examples
+- current repeated patterns beat isolated legacy code
+- developer guidance beats weak inference
+- uncertainty must be stated, not hidden
+
+==================================================
+STEP 4 — CHECK PREVIOUS SOLUTIONS
+==================================================
+
+Read previous-solutions.md and identify whether this task, or a closely related one, already has proposed solutions.
+
+Before proposing a new solution:
+
+- check whether the same solution was already proposed
+- check its stored confidence level and confidence score
+- check whether it was accepted, rejected, or deferred
+- check whether new evidence materially changes its confidence
+
+Rules:
+
+- Do not propose the same solution again if it was already proposed with equal or higher confidence
+- Only revive a previous solution if new evidence raises confidence or resolves prior objections
+- If repeating a previously rejected solution, explicitly explain what new evidence changes the conclusion
+
+==================================================
+STEP 5 — CHECK FOR RISK AREAS
+==================================================
+
+Determine whether the task touches:
+
+- framework core modules
+- registration mechanisms
+- execution pipelines
+- high-churn modules
+- fragile integration points
+
+If risk exists:
+- state the risk clearly
+- prefer the smallest safe change
+- avoid architectural expansion
+
+==================================================
+STEP 6 — GENERATE CANDIDATE SOLUTIONS
+==================================================
+
+Propose candidate implementation approaches only if they are not duplicates of prior recorded solutions at equal or higher confidence.
+
+For each candidate include:
+
+- Solution ID
+- Description
+- Classification
+- Evidence Paths
+- Confidence Level
+- Confidence Score (0.0 to 1.0)
+- Confidence Basis
+- Reason it is distinct from previous recorded solutions
+
+Allowed classifications:
+
+- Enforced Rule
+- Current Observed Convention
+- Legacy Pattern
+- Risk Signal
+- Developer Rule
+- Uncertain Inference
+
+Confidence guidance:
+
+- High = 0.80 to 1.00
+- Medium = 0.50 to 0.79
+- Low = 0.00 to 0.49
+
+Confidence must be evidence-based.
+
+Examples:
+- enforced rule from tooling → very high
+- repeated pattern in nearby active code → high
+- repeated pattern in distant active modules → medium to high
+- supported mainly by dev-info.md but weakly reflected in code → medium
+- weak inference from names or sparse examples → low
+
+==================================================
+STEP 7 — HANDLE UNCERTAINTY
+==================================================
+
+If conflicting patterns exist:
+
+- list the competing approaches
+- rank them by confidence score
+- explain the evidence for each
+- choose the safest approach consistent with nearby code and repository guidance
+
+Do not silently normalize architectural inconsistencies.
+
+==================================================
+STEP 8 — IMPLEMENT THE BEST DISTINCT SOLUTION
+==================================================
+
+Implement only the highest-confidence solution that has not already been proposed earlier at equal or higher confidence, unless new evidence justifies updating it.
+
+Follow these principles:
+
+- mimic neighboring files first
+- reuse existing abstractions
+- preserve framework lifecycle behavior
+- introduce minimal safe modifications
+- avoid architectural refactoring unless explicitly requested
+
+==================================================
+STEP 9 — VERIFY CONSISTENCY
+==================================================
+
+After generating code, confirm that it:
+
+- matches repository conventions
+- respects architecture boundaries
+- integrates correctly with framework mechanisms
+- does not introduce external framework assumptions
+
+==================================================
+STEP 10 — UPDATE previous-solutions.md
+==================================================
+
+Append or update an entry in previous-solutions.md for all load-bearing solutions considered.
+
+For each recorded solution include:
+
+- Solution ID
+- Task
+- Description
+- Status: candidate / rejected / accepted / deferred
+- Classification
+- Evidence Paths
+- Confidence Level
+- Confidence Score
+- Confidence Basis
+- Reasoning
+- What changed from any earlier similar solution
+- Confidence Change:
+  - previous score
+  - new score
+  - reason for change
+
+Rules for confidence maintenance:
+
+- never change confidence silently
+- if confidence increases, record what evidence strengthened it
+- if confidence decreases, record what conflict or contradiction weakened it
+- if confidence is unchanged, say why the prior score still stands
+
+If a prior solution was superseded, link to the earlier solution ID.
+
+==================================================
+STEP 11 — UPDATE current-learnings.md
+==================================================
+
+If the task reveals durable new information, append or update current-learnings.md.
+
+Record only meaningful learnings such as:
+
+- newly confirmed local conventions
+- clarified framework behavior
+- newly discovered risk areas
+- useful examples worth reusing
+- unresolved ambiguities worth watching
+
+For each learning include:
+
+- Learning ID
+- Context
+- Observation
+- Classification
+- Evidence Paths
+- Confidence Level
+- Confidence Score
+- Confidence Basis
+- Stability: stable / provisional / disputed
+- Relevance for future tasks
+- Confidence Change:
+  - previous score
+  - new score
+  - reason for change
+
+Rules for learning maintenance:
+
+- update an existing learning if the same observation already exists
+- do not create duplicate learnings
+- if evidence strengthens the learning, increase confidence and explain why
+- if conflicting evidence appears, reduce confidence or mark as disputed
+
+==================================================
+FINAL RULE
+==================================================
+
+Do not repeat previously proposed solutions unless new evidence materially improves confidence.
+
+Use previous-solutions.md as proposal memory and current-learnings.md as evolving repository intelligence.
+
+Confidence is persistent state, not temporary commentary.
+Maintain it explicitly across runs.

@@ -1,0 +1,81 @@
+You are modifying a repository that uses a custom internal Java framework.
+
+Do not assume Spring Boot or standard enterprise Java architecture unless explicitly present in the code.
+
+This task is ticket-scoped. Use ticket-specific memory files for this task.
+
+## Task Input
+
+- Ticket ID: LES-123456
+- Task Summary: [short summary here]
+- Task Details: [paste the task details here]
+- Attached Artifacts: [PDF, issue description, screenshots, logs, etc.]
+
+If a ticket ID is provided, use these task memory files:
+
+- `LES-123456-learnings.md`
+- `LES-123456-previous-solutions.md`
+
+If they already exist:
+- read them first
+- reuse them
+- update them instead of duplicating entries
+
+Also read these sources first if they exist:
+
+1. `framework-mental-model.md`
+2. `dev-info.md`
+3. `CLAUDE.md`
+4. relevant files in `/ai-context`
+5. `LES-123456-previous-solutions.md`
+6. `LES-123456-learnings.md`
+7. neighboring source files related to the task
+
+Before coding:
+
+1. identify the relevant framework concepts involved in this task
+2. list the applicable local rules and conventions
+3. check `LES-123456-previous-solutions.md` to avoid repeating a solution already proposed with equal or higher confidence
+4. rank candidate solutions by confidence
+5. implement only the best distinct solution
+6. update:
+   - `LES-123456-previous-solutions.md`
+   - `LES-123456-learnings.md`
+   - relevant `/ai-context/*` files if durable new knowledge was discovered
+   - `CLAUDE.md` only if AI operating guidance changed
+
+For every load-bearing solution or learning, maintain:
+
+- Classification
+- Evidence Paths
+- Confidence Level
+- Confidence Score
+- Confidence Basis
+
+Allowed classifications:
+
+- Enforced Rule
+- Current Observed Convention
+- Legacy Pattern
+- Risk Signal
+- Developer Rule
+- Uncertain Inference
+
+Confidence guidance:
+
+- High = 0.80–1.00
+- Medium = 0.50–0.79
+- Low = 0.00–0.49
+
+Apply these precedence rules:
+
+- local enforced rules beat global conventions
+- neighboring active code beats distant examples
+- repeated current patterns beat isolated legacy code
+- developer guidance beats weak inference
+- uncertainty must be stated, not hidden
+
+Final rule:
+
+Do not repeat previously proposed solutions unless new evidence materially increases confidence.
+Use ticket-scoped memory for this task.

@@ -1,0 +1,18 @@
+Read the issue in LES-123456.pdf file
+
+Load understanding and current learnings from ai-context/* & ai-analysis/* files if present.
+
+Before giving the final answer:
+
+1. Generate 2-3 candidate solutions.
+2. Compare them using repository evidence, neighboring code, and prior solutions.
+3. Assign each a confidence percentage and confidence reason.
+4. Perform self-critique on the top solution:
+   - downsides
+   - risks
+   - assumptions
+   - likely failure modes
+5. Reject the top solution if the critique reveals a stronger alternative.
+6. Return only the best solution that is distinct from prior recorded solutions.
+7. If confidence is below 75%, state the uncertainty explicitly.
+

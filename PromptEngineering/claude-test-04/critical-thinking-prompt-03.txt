@@ -1,0 +1,194 @@
+# PROBLEM
+Read the issue in `<TASK_ID>.pdf`.
+
+---
+
+# CONTEXT LOADING
+
+Load context from these sources (if present):
+
+- `framework-mental-model.md`
+- `dev-info.md`
+- `CLAUDE.md`
+- `ai-context/*`
+- `ai-analysis/*`
+- `<TASK_ID>-previous-solutions.md`
+- `<TASK_ID>-learnings.md`
+
+Also inspect **neighboring source files**, defined as:
+- same package or module
+- same framework contract (e.g., same base class / interface)
+- files referenced by task-related code
+- recently modified files in the same feature area (if visible)
+
+---
+
+# SOURCE PRECEDENCE (STRICT)
+
+When sources conflict, resolve using this order:
+
+1. **Relevant neighboring code (most important)**
+2. **Build-enforced rules (lint, compiler, CI constraints)**
+3. **Current ai-context files**
+4. **ai-analysis files (derived inference)**
+5. **framework-mental-model.md (summary guidance)**
+6. **Task PDF**
+7. **Previous solutions / learnings**
+8. **General inference (least reliable)**
+
+Never override higher-precedence evidence with lower-precedence assumptions.
+
+---
+
+# INTERPRETING THE TASK
+
+Treat the PDF as:
+- **requirement input**, not architectural authority
+
+If the PDF conflicts with repository patterns:
+- explicitly report the conflict
+- prefer repository-safe interpretation unless the task explicitly requires deviation
+
+---
+
+# SOLUTION RULES
+
+- Do NOT assume Spring Boot or standard enterprise Java unless explicitly present
+- Do NOT introduce external architectural patterns not evidenced in the repository
+- Prefer **reusing existing patterns** over inventing new ones
+- Prefer **neighboring code** over global assumptions
+- Do NOT repeat a prior solution **unless new evidence materially changes its validity**
+
+A solution is considered "distinct" only if it changes at least one:
+- mechanism
+- scope
+- evidence basis
+- risk profile
+
+---
+
+# THINKING PROCESS (MANDATORY)
+
+## Step 1 — Identify Relevant Context
+List:
+- relevant classes/files/packages inspected
+- relevant ai-context / ai-analysis files used
+- relevant PDF sections (if applicable)
+
+---
+
+## Step 2 — Generate Candidate Solutions
+Generate 2–3 viable approaches.
+
+For each candidate:
+
+- **Approach Summary**
+- **Classification** (choose one):
+  - Best-Fit Current Convention
+  - Legacy-Compatible Option
+  - High-Risk Divergence
+  - Uncertain Inference
+- **Evidence**
+  - specific files (paths)
+  - patterns observed
+  - context files referenced
+- **Confidence (%)**
+- **Confidence Reason (must reference evidence, not intuition)**
+- **Risks / Tradeoffs**
+
+---
+
+## Step 3 — Compare Candidates
+
+Compare based on:
+- alignment with neighboring code
+- consistency with current conventions
+- conflict with legacy patterns
+- risk to framework lifecycle / registration
+- distinctness from prior solutions
+
+---
+
+## Step 4 — Self-Critique Top Candidate
+
+For the best candidate:
+
+- hidden assumptions
+- edge cases / failure modes
+- where it might break framework expectations
+- what evidence is weak or missing
+
+If critique reveals a stronger candidate → switch.
+
+---
+
+## Step 5 — Handle Uncertainty
+
+If:
+- evidence is weak, OR
+- sources conflict, OR
+- confidence < 75%
+
+Then:
+- explicitly state uncertainty
+- prefer the **most conservative, local, reversible solution**
+
+---
+
+# OUTPUT FORMAT
+
+## Context Used
+- Files inspected:
+- Neighboring code:
+- Context docs:
+- PDF references:
+
+## Previous Solutions Check
+- Summary of relevant past attempts
+- Why they are not reused (or why reconsidered with new evidence)
+
+## Candidate Comparison
+(Concise, evidence-based)
+
+## Self-Critique
+(Top 3–5 concrete risks or assumptions)
+
+## Final Solution
+- Solution Summary
+- Why this fits repository patterns (with evidence)
+- Confidence: <X>%
+- Confidence Reason (explicit evidence-based)
+- Risks / Downsides
+- Why it is distinct from previous solutions
+
+---
+
+# FAILURE MODE (IMPORTANT)
+
+If you cannot find sufficient evidence:
+
+- DO NOT fabricate patterns
+- Return:
+  - safest minimal change
+  - clearly stated uncertainty
+  - list of missing evidence needed
+
+---
+
+# MEMORY UPDATE (POST-FEEDBACK ONLY)
+
+After user feedback:
+
+Update:
+- `<TASK_ID>-previous-solutions.md`
+- `<TASK_ID>-learnings.md`
+
+Include:
+- solution summary
+- classification
+- confidence
+- verdict: Pass / Fail / Deferred
+- why verdict changed
+- new evidence (if any)
+
+Do NOT update memory before feedback is received.

@@ -1,0 +1,59 @@
+# problem to solve
+Read the issue in `<TASK_ID>.pdf`.
+
+# context loading
+Load context from these files if present:
+- `framework-mental-model.md`
+- `dev-info.md`
+- `CLAUDE.md`
+- `ai-context/*`
+- `ai-analysis/*`
+- `<TASK_ID>-previous-solutions.md`
+- `<TASK_ID>-learnings.md`
+
+Also inspect neighboring source files related to the task.
+
+Treat the PDF as task-specific requirement evidence, not the sole architectural source of truth.
+
+# solution rules
+- Do not assume Spring Boot or standard enterprise Java architecture unless explicitly present.
+- Do not propose a solution that already exists in `<TASK_ID>-previous-solutions.md` at equal or higher confidence.
+- Prefer repository evidence, neighboring code, and current context over weak inference.
+
+# thinking process
+Before giving the final answer:
+
+1. Generate 2-3 candidate solutions.
+2. Compare them using repository evidence, neighboring code, current context, and prior solutions.
+3. Assign each:
+   - classification
+   - confidence percentage
+   - confidence reason
+4. Perform self-critique on the top solution:
+   - downsides
+   - risks
+   - assumptions
+   - likely failure modes
+5. Reject the top solution if the critique reveals a stronger alternative.
+6. Return only the best solution that is distinct from prior recorded solutions.
+7. If confidence is below 75%, state the uncertainty explicitly.
+
+# output format
+## Context Used
+## Previous Solutions Check
+## Candidate Comparison
+## Self-Critique
+## Final Solution
+- Solution Summary
+- Confidence: <X>%
+- Confidence Reason
+- Risks / Downsides
+- Why it is distinct from previous solutions
+
+# memory update
+After user feedback:
+- update `<TASK_ID>-previous-solutions.md`
+- update `<TASK_ID>-learnings.md`
+- mark verdict as Pass / Fail / Deferred
+- record why the verdict changed
+- update confidence if new evidence appears

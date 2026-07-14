@@ -1,7 +1,9 @@
 from pathlib import Path
 
 OUTPUT_FILE = "TeachingGuide.txt"
-PROMPT = "Teach me in the following way. Read all examples and then teach topics like the examples"
+PROMPT = ("Teach me in the following way. Read all examples and then teach topics like the examples. "
+          "Never expect me to know the terminology."
+          )
 
 
 def merge_files():

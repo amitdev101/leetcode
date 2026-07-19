@@ -1,0 +1,483 @@
+Imagine you're building an AI assistant for your company.
+
+It answers HR questions, explains engineering documentation, helps customer support, and everyone loves it during testing.
+
+Then Monday morning arrives. 🔥
+
+At exactly 9:00 AM, HR uploads a new employee handbook.
+
+One small change.
+
+Annual leave has increased from 20 days to 24 days.
+
+Five minutes later an employee opens the chatbot and asks:
+
+"How much vacation do I get?"
+
+The chatbot confidently replies:
+
+"Employees receive 20 days of annual leave."
+
+The answer is fluent.
+
+The grammar is perfect.
+
+The confidence is convincing.
+
+And it's completely wrong.
+
+Now imagine this isn't an HR handbook.
+
+Imagine it's a hospital protocol, a banking regulation, or an aircraft maintenance manual.
+
+The biggest problem isn't that the AI makes mistakes.
+
+It's that the world changed... but the AI didn't.
+
+The first idea almost everyone has is simple.
+
+"Let's update the AI."
+
+Sounds obvious.
+
+But what does "update the AI" actually mean?
+
+A language model doesn't keep a folder full of documents that we can edit.
+
+Its knowledge is spread across billions of learned numbers.
+
+Changing one company policy isn't like editing a PDF.
+
+It's closer to rebuilding an entire library because one paragraph changed in one book.
+
+Training finishes.
+
+HR uploads another revision.
+
+Training starts again.
+
+The AI is always behind reality.
+
+So that idea dies quickly.
+
+🤔 Then another idea appears.
+
+"Don't teach the AI."
+
+"Just let it read the latest documents before answering."
+
+Now that sounds much smarter.
+
+If the documents are always current...
+
+the answers should always be current too.
+
+Problem solved.
+
+...
+
+Or is it?
+
+Let's zoom into what your server would actually do.
+
+A user's question arrives over HTTP.
+
+Your Python application receives the request.
+
+Python now has a choice.
+
+It can immediately send the question to Gemma...
+
+or it can first gather company documents.
+
+Suppose your company has:
+
+HR policies
+Engineering documentation
+Security manuals
+Product specifications
+Meeting notes
+Legal contracts
+
+Thousands.
+
+Maybe millions.
+
+If Python simply forwards every document to Gemma, something interesting happens.
+
+The CPU starts processing thousands of completely irrelevant pages.
+
+Memory fills with documents nobody asked about.
+
+Gemma spends time reading networking documentation...
+
+while the employee only wanted to know about vacation.
+
+One user?
+
+Maybe acceptable.
+
+Ten thousand simultaneous employees?
+
+Now your servers spend nearly all their time reading information nobody needs.
+
+The AI doesn't suffer from too little knowledge.
+
+It suffers from too much knowledge.
+
+The problem has changed again.
+
+We no longer need all the documents.
+
+We only need the few paragraphs that matter.
+
+But now another question appears.
+
+How do we find those paragraphs?
+
+The obvious answer is search.
+
+We've had search engines for decades.
+
+Let's search the documents.
+
+Suppose the employee asks:
+
+"How much vacation do I get?"
+
+The handbook says:
+
+"Employees receive 24 days of annual leave."
+
+Hmm...
+
+The employee never said annual leave.
+
+The document never said vacation.
+
+Different words.
+
+Same meaning.
+
+Fine.
+
+Maybe keyword search isn't enough.
+
+Then another employee asks:
+
+"Explain the leave policy."
+
+Your handbook contains two paragraphs.
+
+One says:
+
+Annual Leave
+
+Another says:
+
+When an employee leaves the company...
+
+Now the word leave appears in both.
+
+Humans instantly understand they're talking about completely different things.
+
+The computer doesn't.
+
+It simply sees the same letters.
+
+Suddenly the problem isn't searching.
+
+The problem is understanding meaning.
+
+So now the audience should naturally be asking:
+
+How can a computer search by meaning instead of spelling?
+
+Imagine every paragraph becoming a point on an enormous invisible map.
+
+Vacation policies gather in one neighborhood.
+
+Payroll policies form another.
+
+Security documentation ends up somewhere else.
+
+Database guides cluster together.
+
+Nearby points represent similar ideas.
+
+Faraway points represent unrelated ideas.
+
+The computer is no longer thinking in words.
+
+It's thinking in locations.
+
+Only now do we give those locations a name.
+
+They're called embeddings.
+
+An embedding is simply a numerical representation of a paragraph's meaning.
+
+Now let's watch what actually happens inside your computer.
+
+HR uploads the handbook.
+
+Python reads the first paragraph.
+
+Instead of sending it to Gemma, Python sends it to the embedding model.
+
+If the model isn't already loaded, Ollama maps its weights from disk into RAM.
+
+The CPU begins performing millions of matrix multiplications.
+
+A few milliseconds later, the paragraph has become a list of numbers.
+
+Something like:
+
+[0.18, -0.42, 0.77, ...]
+
+Those numbers don't matter to us.
+
+What matters is that paragraphs with similar meanings produce nearby points on that invisible map.
+
+Python stores both pieces of information in PostgreSQL.
+
+The original paragraph.
+
+And its embedding.
+
+The paragraph never disappears.
+
+The embedding simply becomes a fast way to find it later.
+
+This process happens only once when documents are indexed.
+
+Maybe today.
+
+Maybe tomorrow.
+
+But not every time someone asks a question.
+
+Hours later the employee asks:
+
+"How much vacation do I get?"
+
+Once again, Python does not call Gemma.
+
+Instead it sends only the question to the embedding model.
+
+The CPU performs another round of matrix multiplications.
+
+Another embedding is created.
+
+Now PostgreSQL receives something it understands perfectly.
+
+Numbers.
+
+Not English.
+
+Just numbers.
+
+Inside PostgreSQL, pgvector begins comparing the question's embedding against the millions of stored embeddings.
+
+It isn't reading documents.
+
+It isn't understanding language.
+
+It's computing distances between points.
+
+Because those document embeddings were already created yesterday, PostgreSQL doesn't need to run the embedding model again.
+
+It simply compares numbers already sitting in memory or on disk.
+
+Within milliseconds...
+
+one million paragraphs become ten.
+
+It feels almost magical.
+
+The entire company knowledge base has been reduced to ten likely answers.
+
+For a moment, it feels like we've solved the problem.
+
+But then...
+
+you run the exact experiment you performed in your own project.
+
+You ask:
+
+"Leave policy in simple terms."
+
+And PostgreSQL returns:
+
+Employee Offboarding
+Annual Leave
+Sick Leave
+
+Wait.
+
+Why?
+
+Didn't we just build a system that understands meaning?
+
+Why would it think Employee Offboarding is the best answer?
+
+This is the moment where many engineers become confused.
+
+The embedding model is smarter than keyword search.
+
+But it isn't reading the question and the paragraph together.
+
+Remember how indexing worked?
+
+Yesterday the embedding model summarized each paragraph independently.
+
+Today it summarized the question independently.
+
+PostgreSQL compared those two independent summaries.
+
+That's why embedding search is so fast.
+
+Every document was processed once.
+
+Only the question is new.
+
+The trade-off is that the embedding model never gets to ask:
+
+"Does this paragraph answer this question?"
+
+It only compares two compressed representations.
+
+Most of the time that's enough.
+
+Sometimes it isn't.
+
+So now a new mystery appears.
+
+Can we think harder...
+
+without becoming slow again?
+
+The answer is yes.
+
+Because we no longer have one million paragraphs.
+
+We only have ten.
+
+Now a second model wakes up.
+
+Instead of reading paragraphs one by one...
+
+it reads them together with the user's question.
+
+First it sees:
+
+Question:
+
+Leave policy
+
+Paragraph:
+
+Employee leaves the company...
+
+Then it sees:
+
+Question:
+
+Leave policy
+
+Paragraph:
+
+Employees receive 24 days of annual leave...
+
+For the first time, one model is looking at both sides together.
+
+It immediately realizes that the second paragraph answers the question much better.
+
+Its job isn't writing answers.
+
+Its job isn't searching databases.
+
+Its only job is reordering those ten candidates.
+
+That model is called a Cross Encoder, and because it rearranges the search results, we usually call it a reranker.
+
+Why not use it for all one million documents?
+
+Because then it would have to read one million question-paragraph pairs.
+
+The CPU would spend seconds—or minutes—processing every query.
+
+Instead, embeddings do the fast filtering.
+
+The reranker does the careful thinking.
+
+Each solves the other's weakness.
+
+Now we finally have the correct paragraphs.
+
+Surely the employee can just read them.
+
+Technically, yes.
+
+But that's not what they asked for.
+
+They asked:
+
+"Explain the leave policy in simple terms."
+
+Somebody still has to read those paragraphs...
+
+understand them...
+
+and explain them naturally.
+
+Only now, after all that work, does Gemma finally enter the story.
+
+Python builds one final prompt.
+
+It contains:
+
+the best three paragraphs
+the employee's question
+
+Gemma never sees PostgreSQL.
+
+It never sees embeddings.
+
+It never compares vectors.
+
+It simply reads the evidence exactly like a human reading three pages before answering someone's question.
+
+And because those paragraphs came from the latest handbook uploaded five minutes ago...
+
+Gemma answers:
+
+"Full-time employees receive 24 days of paid annual leave each year."
+
+If you've been following the story carefully, you'll notice something interesting.
+
+We never changed Gemma's memory.
+
+We never retrained it.
+
+We never taught it the new handbook.
+
+Instead, we built an entire system around it.
+
+A system that first retrieves the right information...
+
+then augments Gemma's prompt with that information...
+
+and only then allows Gemma to generate an answer.
+
+Only now does the name make perfect sense.
+
+Retrieval-Augmented Generation.
+
+Or simply...
+
+RAG.
+
+And that's why, when HR changes the handbook at 9:00 AM, your chatbot can give the correct answer at 9:05 AM—not because the language model suddenly became smarter, but because the system learned something even more valuable:
+
+Before speaking, always find the truth.

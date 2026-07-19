@@ -1,0 +1,688 @@
+start with a mystery, never assume you know the terminology, build everything from first principles, reveal one mechanism at a time, and explain Spring Boot as an engineering investigation rather than a tutorial. I'll also use the uploaded teaching guide as the basis for the style.
+
+Spring Boot — Under the Hood
+
+💥 Imagine you write exactly one Java file.
+
+@SpringBootApplication
+public class App {
+    public static void main(String[] args) {
+        SpringApplication.run(App.class, args);
+    }
+}
+
+You press Run.
+
+A few seconds later your terminal prints:
+
+Tomcat started on port 8080
+Started App in 2.4 seconds
+
+You open your browser.
+
+http://localhost:8080
+
+Your website is already running.
+
+But...
+
+🤔 You never installed Tomcat.
+
+You never started a web server.
+
+You never opened port 8080.
+
+You never wrote socket programming.
+
+You never created HTTP listeners.
+
+Yet somehow your laptop has become a web server.
+
+Where did it come from?
+
+Most people answer this by saying:
+
+"Spring Boot has an embedded Tomcat."
+
+That's technically correct.
+
+But it explains almost nothing.
+
+It's like saying
+
+"A plane flies because it has wings."
+
+The real mystery is:
+
+How did writing one Java class suddenly transform an ordinary program into a server capable of handling thousands of HTTP requests?
+
+To answer that, we have to forget Spring Boot for a moment.
+
+Let's go back to plain Java.
+
+Suppose you write
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println("Hello");
+    }
+
+}
+
+When you execute it,
+
+the JVM loads your class,
+
+finds the main() method,
+
+executes it,
+
+prints
+
+Hello
+
+and exits.
+
+Nothing magical happened.
+
+The operating system simply created one Java process.
+
+The JVM loaded your bytecode.
+
+It executed instructions one by one.
+
+Eventually there were no more instructions left.
+
+The process terminated.
+
+Every normal Java application behaves exactly like this.
+
+Run.
+
+Execute.
+
+Exit.
+
+Now imagine instead your code looked like this.
+
+while(true){
+
+}
+
+Now something changes.
+
+The JVM reaches the loop.
+
+The loop never ends.
+
+Since your program never finishes,
+
+the operating system never destroys the process.
+
+The application keeps running forever.
+
+This tiny observation is surprisingly important.
+
+A web server cannot serve requests if it exits after two milliseconds.
+
+It must stay alive forever waiting for users.
+
+So before Spring Boot can become a server,
+
+it first needs one thing.
+
+A process that never dies.
+
+But waiting forever raises another mystery.
+
+🤔
+
+Waiting for what?
+
+Nobody has connected yet.
+
+No browser has sent a request.
+
+How can software wait for something that hasn't happened?
+
+The operating system already solved this decades ago.
+
+Every computer has network ports.
+
+Think of a port like a numbered apartment door.
+
+Your computer is the apartment building.
+
+Port 80.
+
+Port 443.
+
+Port 8080.
+
+Each one is simply a doorway where programs can receive network traffic.
+
+But a doorway does nothing unless someone stands behind it listening.
+
+That's exactly what a web server does.
+
+It tells the operating system:
+
+"If anyone knocks on door 8080, wake me up."
+
+The OS remembers this.
+
+Then the server sleeps.
+
+Nothing happens until a browser arrives.
+
+Imagine Chrome sends
+
+GET /
+
+to
+
+localhost:8080
+
+The operating system receives those network packets first.
+
+Not Spring.
+
+Not Tomcat.
+
+The operating system.
+
+It notices
+
+Someone is trying to reach port 8080.
+
+Then it checks
+
+Who owns this port?
+
+Earlier,
+
+Tomcat registered itself as the owner.
+
+So the operating system hands those bytes to Tomcat.
+
+Only now does Tomcat wake up.
+
+But this creates another mystery.
+
+🤔
+
+Where did Tomcat come from?
+
+You never downloaded it.
+
+You never launched it.
+
+You only wrote
+
+SpringApplication.run(...)
+
+To answer this,
+
+we need to look at what actually gets downloaded when Maven builds your project.
+
+Suppose your pom.xml contains
+
+spring-boot-starter-web
+
+Most beginners think this is one library.
+
+It isn't.
+
+It's actually a bundle.
+
+Inside that single dependency are dozens of other libraries.
+
+Jackson.
+
+Spring MVC.
+
+Validation.
+
+Logging.
+
+Servlet APIs.
+
+Embedded Tomcat.
+
+Hundreds of classes.
+
+Thousands of Java files.
+
+When Maven downloads this dependency,
+
+it quietly downloads all of them.
+
+Your project already contains Tomcat.
+
+It just hasn't started yet.
+
+Now we know Tomcat exists.
+
+But libraries don't execute themselves.
+
+A JAR file sitting on your disk is just compressed files.
+
+Somebody still has to create Tomcat objects.
+
+Configure them.
+
+Start them.
+
+Open port 8080.
+
+Who does all that work?
+
+Everything begins here.
+
+SpringApplication.run(...)
+
+That single line starts one of the largest startup sequences in Java.
+
+Internally,
+
+Spring Boot performs hundreds of steps.
+
+But they all begin with one simple job.
+
+Build something called the Application Context.
+
+Don't worry about the name yet.
+
+Let's discover why it even needs to exist.
+
+Imagine your application has three classes.
+
+class UserRepository
+class UserService
+class UserController
+
+The controller needs the service.
+
+The service needs the repository.
+
+Without Spring,
+
+you would manually write
+
+UserRepository repository =
+    new UserRepository();
+
+UserService service =
+    new UserService(repository);
+
+UserController controller =
+    new UserController(service);
+
+This works.
+
+Until your application has
+
+500 classes.
+
+Now creating objects manually becomes a nightmare.
+
+Who creates what first?
+
+Which object depends on which?
+
+Which objects should exist once?
+
+Which should be recreated?
+
+Managing this graph manually becomes incredibly difficult.
+
+Spring exists largely to solve this problem.
+
+Instead of you creating objects,
+
+Spring creates them.
+
+Instead of you wiring them together,
+
+Spring wires them together.
+
+Instead of every class searching for dependencies,
+
+Spring delivers dependencies automatically.
+
+This process is called Dependency Injection, but notice we only introduce the term after seeing the problem it solves.
+
+Now another mystery appears.
+
+🤔
+
+How does Spring know which classes it should create?
+
+There could be thousands of Java classes.
+
+Surely it doesn't instantiate everything.
+
+When startup begins,
+
+Spring scans your project.
+
+It looks for special annotations.
+
+For example
+
+@Controller
+@Service
+@Repository
+@Component
+
+These annotations are simply markers.
+
+They tell Spring
+
+"Please manage this object."
+
+Spring collects every marked class.
+
+Then it begins building objects.
+
+But object creation isn't random.
+
+Suppose
+
+Controller
+↓
+
+Service
+↓
+
+Repository
+
+Spring cannot create the controller first.
+
+It needs the service.
+
+The service needs the repository.
+
+So Spring builds the dependency graph.
+
+Repository first.
+
+Then Service.
+
+Then Controller.
+
+By the time the controller exists,
+
+everything it needs already exists.
+
+Once all these managed objects have been created,
+
+Spring stores them inside one huge registry.
+
+That registry is called the Application Context.
+
+Think of it as the application's central warehouse.
+
+Whenever something needs an object,
+
+it asks the warehouse.
+
+The warehouse returns the existing one.
+
+Nothing gets recreated unnecessarily.
+
+But something huge is still missing.
+
+We still don't have a web server.
+
+We only have Java objects.
+
+How does Tomcat suddenly appear inside this warehouse?
+
+Remember
+
+spring-boot-starter-web
+
+Besides downloading Tomcat,
+
+it also includes configuration classes.
+
+During startup,
+
+Spring Boot notices
+
+"Tomcat classes exist."
+
+That observation triggers something called Auto Configuration.
+
+Again,
+
+don't memorize the name.
+
+Understand the problem first.
+
+Without it,
+
+every developer would need hundreds of configuration lines.
+
+Instead,
+
+Spring Boot asks
+
+"What libraries are present?"
+
+Tomcat?
+
+Configure a web server.
+
+Jackson?
+
+Configure JSON.
+
+Hibernate?
+
+Configure database support.
+
+Security?
+
+Configure authentication.
+
+Instead of asking you,
+
+Spring Boot inspects the classpath and configures everything automatically.
+
+Now Tomcat finally starts.
+
+It creates server sockets.
+
+Registers port 8080.
+
+Begins waiting for requests.
+
+Only after all this finishes do you see
+
+Tomcat started on port 8080
+
+Now the server is alive.
+
+But another mystery appears.
+
+🤔
+
+Suppose the browser sends
+
+GET /users
+
+Tomcat receives it.
+
+Then what?
+
+Tomcat has no idea what
+
+/users
+
+means.
+
+It only understands HTTP.
+
+It doesn't know your business logic.
+
+So who translates HTTP requests into Java method calls?
+
+Spring places one special object inside Tomcat.
+
+This object is called the Dispatcher Servlet.
+
+Imagine it as the receptionist of a company.
+
+Every visitor enters through the receptionist first.
+
+Nobody walks directly into the CEO's office.
+
+Similarly,
+
+every HTTP request first reaches the Dispatcher Servlet.
+
+Never your controller directly.
+
+The Dispatcher examines
+
+GET /users
+
+Then it searches for a matching controller method.
+
+Suppose it finds
+
+@GetMapping("/users")
+
+Perfect.
+
+It now knows exactly which Java method should execute.
+
+It invokes that method.
+
+The method returns data.
+
+Spring converts the returned object into JSON using Jackson.
+
+The Dispatcher builds an HTTP response.
+
+Tomcat sends the bytes back through the operating system.
+
+The operating system delivers them to Chrome.
+
+Chrome renders the page.
+
+The entire request may have taken only 20 milliseconds.
+
+🔍 Notice how many components participated.
+
+Browser
+
+↓
+
+Operating System
+
+↓
+
+Tomcat
+
+↓
+
+Dispatcher Servlet
+
+↓
+
+Controller
+
+↓
+
+Service
+
+↓
+
+Repository
+
+↓
+
+Database
+
+↓
+
+Repository
+
+↓
+
+Service
+
+↓
+
+Controller
+
+↓
+
+Dispatcher
+
+↓
+
+Tomcat
+
+↓
+
+Operating System
+
+↓
+
+Browser
+
+Every request follows this chain.
+
+Every single time.
+
+⚠️ Many beginners believe Spring Boot itself is the web server.
+
+It isn't.
+
+Tomcat is the server.
+
+Spring Boot starts Tomcat.
+
+Spring Framework handles dependency injection, request routing, lifecycle management, and many other concerns.
+
+Spring Boot mainly removes the huge amount of configuration that older Spring applications required.
+
+🧩 Now we can finally return to the mystery we started with.
+
+Why did writing
+
+SpringApplication.run(App.class);
+
+suddenly create a running web server?
+
+Because that one method secretly triggered an enormous startup sequence.
+
+✅ The JVM launched your Java process.
+
+✅ Spring Boot started building the Application Context.
+
+✅ It scanned your project for annotated classes.
+
+✅ It created every managed object in dependency order.
+
+✅ It inspected every library on the classpath.
+
+✅ It discovered embedded Tomcat.
+
+✅ Auto Configuration configured Tomcat automatically.
+
+✅ Tomcat opened port 8080 and registered with the operating system.
+
+✅ Spring installed the Dispatcher Servlet inside Tomcat.
+
+✅ The server entered its waiting loop.
+
+When your browser later sent an HTTP request, the operating system delivered it to Tomcat, Tomcat forwarded it to the Dispatcher Servlet, the Dispatcher located the correct controller, invoked your business logic, built the HTTP response, and Tomcat returned it to the browser.
+
+💥 What looked like one simple line of code was actually the trigger for hundreds of coordinated steps. Spring Boot didn't magically become a web server—it orchestrated an entire ecosystem of components so that, by the time SpringApplication.run() returned, your ordinary Java process had already transformed into a fully functioning HTTP server.

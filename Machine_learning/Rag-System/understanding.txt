@@ -1,0 +1,13 @@
+sample_document.txt
+        ↓
+embeddinggemma creates vectors
+        ↓
+PostgreSQL stores vectors
+        ↓
+User asks a question
+        ↓
+embeddinggemma creates question vector
+        ↓
+PostgreSQL retrieves similar chunks
+        ↓
+gemma3:1b writes the answer

@@ -1,0 +1,4 @@
+numpy
+pgvector
+psycopg[binary]
+requests

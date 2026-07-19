@@ -1,0 +1,14 @@
+python -m venv .venv
+
+.venv\Scripts\Activate.ps1
+
+docker compose up -d
+
+-- download the embedding model -- lighter version
+docker compose exec ollama ollama pull all-minilm
+
+docker compose exec ollama ollama pull embeddinggemma
+
+docker compose exec ollama ollama list
+
+python rag-embeddings-model-explained-with-all-minilm.py index

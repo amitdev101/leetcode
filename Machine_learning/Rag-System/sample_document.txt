@@ -1,0 +1,55 @@
+Northstar Technologies Employee Handbook
+
+Annual Leave
+
+Every full-time employee receives 24 days of paid annual leave during each
+calendar year. Employees who join during the year receive leave on a
+prorated basis.
+
+Employees should normally submit annual leave requests at least seven days
+before the planned absence. The employee's manager must approve the request.
+
+Unused annual leave may be carried into the next calendar year, but no more
+than five unused days can be carried forward. Any remaining unused days
+expire on March 31 of the following year.
+
+Sick Leave
+
+Full-time employees receive 12 days of paid sick leave per calendar year.
+A medical certificate is required when an employee is absent for more than
+two consecutive working days.
+
+Remote Work
+
+Employees may work remotely for up to three days per week. Remote-working
+days must be agreed upon with the employee's manager.
+
+Employees working remotely must remain available during the company's core
+working hours, which are 10:00 AM to 4:00 PM Indian Standard Time.
+
+Information Security
+
+Company documents must not be uploaded to personal cloud-storage accounts.
+Confidential information may only be stored in systems approved by the
+information-security team.
+
+Employees must immediately report a lost company laptop to both their
+manager and the information-security team.
+
+Expense Reimbursement
+
+Employees must submit expense claims within 30 days of the original
+purchase. Each claim must include a receipt.
+
+A manager may approve an expense claim up to 25,000 Indian rupees. Claims
+above that amount require approval from both the department head and the
+finance department.
+
+Employee Offboarding
+
+When an employee leaves the company, the manager must notify the IT team
+at least three business days before the employee's final working day.
+
+The IT team disables the employee's account at the end of the final working
+day. The employee must return laptops, access cards, security keys, and any
+other company equipment.

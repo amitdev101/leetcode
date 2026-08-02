@@ -1,0 +1,29 @@
+use_default_settings: true
+
+general:
+  instance_name: "Local AI Search"
+
+search:
+  safe_search: 0
+  default_lang: "auto"
+  formats:
+    - html
+    - json
+
+server:
+  secret_key: "replace-with-a-long-random-secret"
+  limiter: false
+  image_proxy: true
+
+engines:
+  - name: ahmia
+    disabled: true
+
+  - name: torch
+    disabled: true
+
+  - name: wikidata
+    disabled: true
+
+  - name: startpage
+    disabled: true
